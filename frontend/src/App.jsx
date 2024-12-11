@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import HeroSection from './pages/HeroSection';
+import AdminMain from './Components/admin/AdminMain'
+import Dashboard from './Components/admin/Dashboard';
 
 const App = () => {
   const Layout = () => {
@@ -36,6 +38,20 @@ const App = () => {
       path: '/test',
       element: <HeroSection />
     },
+    {
+      path: "/admin/dashboard",
+      element: (
+        <div>
+          <AdminMain />
+        </div>
+      ),
+      children: [
+        {
+          path: "/admin/dashboard/",
+          element: <Dashboard />
+        },
+      ]
+    }
 
   ])
   return (

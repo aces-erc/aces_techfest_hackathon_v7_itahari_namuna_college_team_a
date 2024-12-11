@@ -7,7 +7,6 @@ import {
     Pill,
 } from "lucide-react";
 import React, { useEffect } from "react";
-import { render } from "react-dom";
 export default function HeroSection() {
     useEffect(() => {
         const handleParallax = (e) => {
