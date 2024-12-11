@@ -17,7 +17,7 @@ app.use(
   }),
 );
 
-app.get("/", () => {
+app.get("/", (req, res) => {
   res.send("hello via backend!");
 });
 
