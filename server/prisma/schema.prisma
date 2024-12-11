@@ -21,22 +21,22 @@ enum Gender {
 }
 
 model User {
-  id                     Int               @id @default(autoincrement())
-  first_name             String
-  last_name              String
-  dob                    DateTime
-  gender                 Gender
-  role                   Role              @default(PATIENTS)
-  email                  String?
-  address                String
-  phone                  String?           @unique
-  balance                Int
-  password               String
-  insurance_company_id   Int
-  insurance_company      INSURANCE_COMPANY @relation("UserInsuranceCompany", fields: [insurance_company_id], references: [id])
-  createdAt              DateTime          @default(now())
-  updatedAt              DateTime          @updatedAt
-  healthRecords          HealthRecord[]
+  id                   Int               @id @default(autoincrement())
+  first_name           String
+  last_name            String
+  dob                  DateTime
+  gender               Gender
+  role                 Role              @default(PATIENTS)
+  email                String?
+  address              String
+  phone                String?           @unique
+  balance              Int
+  password             String
+  insurance_company_id Int
+  insurance_company    INSURANCE_COMPANY @relation("UserInsuranceCompany", fields: [insurance_company_id], references: [id])
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  healthRecords        HealthRecord[]
 }
 
 model HealthRecord {
@@ -44,36 +44,37 @@ model HealthRecord {
   user_id       Int
   user          User     @relation(fields: [user_id], references: [id])
   date          DateTime @default(now())
-  bloodPressure String
-  sugarLevel    Float
+  bloodPressure String?
+  sugarLevel    Float?
+  description   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
 
 model Hospital {
-  id                     Int                    @id @default(autoincrement())
-  hospital_name          String
-  hospital_address       String
-  insurance_companies    INSURANCE_COMPANY[]    @relation("HospitalInsuranceCompanies")
-  doctors                Doctor[]               @relation("HospitalDoctors")
+  id                  Int                 @id @default(autoincrement())
+  hospital_name       String
+  hospital_address    String
+  insurance_companies INSURANCE_COMPANY[] @relation("HospitalInsuranceCompanies")
+  doctors             Doctor[]            @relation("HospitalDoctors")
 }
 
 model Doctor {
-  id             Int          @id @default(autoincrement())
-  username       String       @unique
-  phone          String       @unique
-  password       String
-  hospital_id    Int
-  hospital       Hospital     @relation("HospitalDoctors", fields: [hospital_id], references: [id])
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id          Int      @id @default(autoincrement())
+  username    String   @unique
+  phone       String   @unique
+  password    String
+  hospital_id Int
+  hospital    Hospital @relation("HospitalDoctors", fields: [hospital_id], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model INSURANCE_COMPANY {
-  id                   Int          @id @default(autoincrement())
-  company_name         String       @unique
-  password             String
-  role                 Role         @default(INSURANCE_COMPANY)
-  users                User[]       @relation("UserInsuranceCompany")
-  hospitals            Hospital[]   @relation("HospitalInsuranceCompanies")
+  id           Int        @id @default(autoincrement())
+  company_name String     @unique
+  password     String
+  role         Role       @default(INSURANCE_COMPANY)
+  users        User[]     @relation("UserInsuranceCompany")
+  hospitals    Hospital[] @relation("HospitalInsuranceCompanies")
 }
