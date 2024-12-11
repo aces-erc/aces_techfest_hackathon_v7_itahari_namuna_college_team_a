@@ -2,9 +2,36 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+const createRefreshToken = (res, userData) => {
+  const id = userData.id;
+  const token = jwtToken(id);
+  console.log(token)
+
+  res.cookie("jwt", token, {
+    expires: new Date(
+      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  })
+
+  statusFunc(res, 201, token)
+}
+
+const jwtToken = (id) => {
+  return jwt.sign({
+    id
+  }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN
+  })
+}
+
+const checkUser = async (phone) => {
+  return prisma.user.findUnique({ where: { phone } });
+};
+
 export const insuranceCompanyController = {
   createInsuranceCompany: async (req, res) => {
-    const { company_name } = req.body;
+    const { company_name, password } = req.body;
 
     if (!company_name) {
       return res.status(400).json({ error: "Company name is required" });
@@ -16,7 +43,8 @@ export const insuranceCompanyController = {
           company_name,
         },
       });
-      res.status(201).json(newInsuranceCompany);
+      // res.status(201).json(newInsuranceCompany);
+      createRefreshToken(res, newInsuranceCompany);
     } catch (error) {
       console.error(error);
       res.status(500).json({
