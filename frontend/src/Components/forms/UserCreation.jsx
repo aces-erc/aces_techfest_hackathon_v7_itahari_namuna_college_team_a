@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Eye, EyeOff } from 'lucide-react';
 
-const UserCreationgi = () => {
+const UserCreation = () => {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -245,4 +245,4 @@ const UserCreationgi = () => {
   );
 };
 
-export default UserCreationgi;
+export default UserCreation;
