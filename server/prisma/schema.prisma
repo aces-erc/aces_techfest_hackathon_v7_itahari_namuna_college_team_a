@@ -9,7 +9,7 @@ datasource db {
 
 enum Role {
   HOSPITAL
-  USER
+  PATIENTS
   DOCTOR
   INSURANCE_COMPANY
 }
@@ -26,7 +26,7 @@ model Patients {
   last_name            String
   dob                  DateTime
   gender               Gender
-  role                 Role
+  role                 Role              @default(PATIENTS)
   email                String?
   address              String
   phone                String?           @unique
@@ -35,24 +35,24 @@ model Patients {
   insurance_company    INSURANCE_COMPANY @relation(fields: [insurance_company_id], references: [id])
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
-  healthRecords        HealthRecord[]?
+  healthRecords        HealthRecord[]
 }
 
 model HealthRecord {
-  id             Int       @id @default(autoincrement())
-  patients_id    Int
-  patient        Patients  @relation(fields: [patients_id], references: [id])
-  date           DateTime  @default(now())
-  bloodPressure  String
-  sugarLevel     Float
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id            Int      @id @default(autoincrement())
+  patients_id   Int
+  patient       Patients @relation(fields: [patients_id], references: [id])
+  date          DateTime @default(now())
+  bloodPressure String
+  sugarLevel    Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Hospital {
-  id                Int    @id @default(autoincrement())
-  hospital_name     String
-  hospital_address  String
+  id               Int    @id @default(autoincrement())
+  hospital_name    String
+  hospital_address String
 }
 
 model INSURANCE_COMPANY {
