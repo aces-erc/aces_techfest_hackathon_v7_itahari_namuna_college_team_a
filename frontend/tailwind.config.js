@@ -7,7 +7,7 @@ export default {
         primary: "#4caf50",
         sliver: "#c0c0c0",
         bgbtn: "#f1f1f1",
-        bgbtnHover: "#d6d6d6",
+        bgbtnHover: "#79db7c",
       },
       fontFamily: {
         heading: ["Roboto Condensed", "sans-serif"],

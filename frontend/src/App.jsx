@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import HeroSection from './pages/HeroSection';
 
 const App = () => {
   const Layout = () => {
@@ -30,6 +31,10 @@ const App = () => {
     {
       path: '/signup',
       element: <Signup />
+    },
+    {
+      path: '/test',
+      element: <HeroSection />
     },
 
   ])
