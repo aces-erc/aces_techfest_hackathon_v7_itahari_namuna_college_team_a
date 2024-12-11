@@ -10,7 +10,8 @@ import React, { useEffect } from "react";
 // import { render } from "react-dom";
 import HomeSvg from "../../images/svg/home.svg";
 import { Link } from "react-router-dom";
-export default function HeroSection() {
+import ProgressBar from "../dashboard/common/ProgressBar";
+export default function Main() {
     useEffect(() => {
         const handleParallax = (e) => {
             const icons = document.querySelectorAll(".floating-icon");
