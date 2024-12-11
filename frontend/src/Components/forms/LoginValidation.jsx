@@ -4,7 +4,7 @@ function Validation(value) {
 
 
     if (value.email.length === 0) {
-        error.email = "Email cannot be empty";
+        error.email = "User id cannot be empty";
     } else {
         error.email = "";
     }
