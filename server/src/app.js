@@ -1,8 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-
 import cookieParser from "cookie-parser";
+
+import patientRoutes from "../src/routes/patientRoutes.js";
+import insuranceRoutes from "../src/routes/insuranceRoutes.js";
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
@@ -17,7 +19,10 @@ app.use(
   }),
 );
 
-app.get("/", () => {
+app.use("/patinets/", patientRoutes);
+app.use("/insurance/", insuranceRoutes);
+
+app.get("/", (req, res) => {
   res.send("hello via backend!");
 });
 
