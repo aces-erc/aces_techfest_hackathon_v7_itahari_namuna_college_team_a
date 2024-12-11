@@ -31,6 +31,7 @@ const checkUser = async (phone) => {
 };
 
 
+
 // REGISTER USER BY INSURANCE COMPANY 
 export const userController = {
   createUser: async (req, res) => {
