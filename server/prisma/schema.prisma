@@ -52,11 +52,13 @@ model HealthRecord {
 }
 
 model Hospital {
-  id                  Int                 @id @default(autoincrement())
-  hospital_name       String
-  hospital_address    String
-  insurance_companies INSURANCE_COMPANY[] @relation("HospitalInsuranceCompanies")
-  doctors             Doctor[]            @relation("HospitalDoctors")
+  id                     Int                    @id @default(autoincrement())
+  hospital_name          String
+  username               String                 @unique
+  password               String
+  hospital_address       String
+  insurance_companies    INSURANCE_COMPANY[]    @relation("HospitalInsuranceCompanies")
+  doctors                Doctor[]               @relation("HospitalDoctors")
 }
 
 model Doctor {
@@ -78,3 +80,4 @@ model INSURANCE_COMPANY {
   users        User[]     @relation("UserInsuranceCompany")
   hospitals    Hospital[] @relation("HospitalInsuranceCompanies")
 }
+
