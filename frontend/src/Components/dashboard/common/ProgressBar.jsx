@@ -6,12 +6,12 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-const ProgressBar = ({ 
-    start, 
-    current, 
-    end, 
-    type = 'amount', 
-    className = '' 
+const ProgressBar = ({
+    start,
+    current,
+    end,
+    type = 'amount',
+    className = ''
 }) => {
     const [progress, setProgress] = useState(0);
 
@@ -69,7 +69,7 @@ const ProgressBar = ({
                 />
 
                 {/* Floating Icon */}
-                <div 
+                <div
                     className={`absolute top-1/2 -translate-y-1/2 transition-all duration-700 ease-out`}
                     style={{ left: `${progress}%` }}
                 >
@@ -90,7 +90,7 @@ const ProgressBar = ({
                 </span>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
                 <span className="text-gray-500">
-                    {type === 'amount' 
+                    {type === 'amount'
                         ? `${Math.round(100 - progress)}% remaining`
                         : `${formatValue(end - current)} remaining`}
                 </span>
