@@ -62,6 +62,137 @@ export const insuranceCompanyController = {
     }
   },
 
+  createHospital: async (req, res) => {
+    const insurance_id = req.user.id; // Gets the Insurance company ID from the authenticated user
+    const { hospital_name, password, hospital_address } = req.body;
+
+    if (!hospital_name || !password || !hospital_address) {
+      return res.status(400).json({ error: "Hospital name, password, and address are required" });
+    }
+
+    const username = hospital_name.replaceAll(" ", "_");
+
+    try {
+      const hashed_password = await bcrypt.hash(password, 12);
+
+      const newHospital = await prisma.hospital.create({
+        data: {
+          hospital_name,
+          username,
+          password: hashed_password,
+          hospital_address,
+          insurance_companies: {
+            connect: [{ id: insurance_id }], // Connect the hospital to an existing insurance company by ID
+          },
+        },
+      });
+
+      console.log(newHospital);
+
+      res.status(201).json(newHospital);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        error: "An error occurred while creating the hospital",
+      });
+    }
+  },
+
+  getAllHospital: async (req, res) => {
+    const insurance_id = req.user.id; // The authenticated insurance company ID
+
+    try {
+      const hospitals = await prisma.hospital.findMany({
+        where: {
+          insurance_companies: {
+            some: {
+              id: insurance_id, // Filter hospitals that have a connection to this insurance company
+            },
+          },
+        },
+        include: {
+          doctors: true, // Optionally include related data (e.g., doctors)
+        },
+      });
+
+      res.status(200).json(hospitals);
+    } catch (error) {
+      console.error("Error fetching hospitals:", error.message);
+      res.status(500).json({
+        error: "An error occurred while fetching the hospitals.",
+      });
+    }
+  },
+
+  updateHospital: async (req, res) => {
+    const hospitalId = req.params.id;
+    console.log(hospitalId);
+    const { hospital_name, username, password, hospital_address } = req.body;
+
+    try {
+      // Check if the hospital exists
+      const existingHospital = await prisma.hospital.findUnique({
+        where: { id: parseInt(hospitalId) },
+      });
+
+      if (!existingHospital) {
+        return res.status(404).json({ error: "Hospital not found" });
+      }
+
+      // Hash the password if it is provided in the request
+      let hashed_password = existingHospital.password;
+      if (password) {
+        hashed_password = await bcrypt.hash(password, 12);
+      }
+
+      // Update the hospital record
+      const updatedHospital = await prisma.hospital.update({
+        where: { id: parseInt(hospitalId) },
+        data: {
+          hospital_name,
+          username,
+          password: hashed_password,
+          hospital_address,
+        },
+      });
+
+      res.status(200).json(updatedHospital);
+    } catch (error) {
+      console.error("Error updating hospital:", error.message);
+      res.status(500).json({
+        error: "An error occurred while updating the hospital.",
+      });
+    }
+  },
+
+  DeleteHospital: async (req, res) => {
+    const hospitalId = req.params.id; // Hospital ID from the request parameters
+
+    try {
+      // Check if the hospital exists
+      const existingHospital = await prisma.hospital.findUnique({
+        where: { id: parseInt(hospitalId) },
+      });
+
+      if (!existingHospital) {
+        return res.status(404).json({ error: "Hospital not found" });
+      }
+
+      // Delete the hospital
+      await prisma.hospital.delete({
+        where: { id: parseInt(hospitalId) },
+      });
+
+      res.status(200).json({ message: "Hospital deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting hospital:", error.message);
+      res.status(500).json({
+        error: "An error occurred while deleting the hospital.",
+      });
+    }
+  },
+
+
   getInsuranceCompanies: async (req, res) => {
     try {
       const insuranceCompanies = await prisma.iNSURANCE_COMPANY.findMany();
