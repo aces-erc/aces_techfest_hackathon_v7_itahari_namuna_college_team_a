@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import statusFunc from "../utils/statusFunc.js";
 
 const prisma = new PrismaClient();
 
@@ -33,16 +36,22 @@ export const insuranceCompanyController = {
   createInsuranceCompany: async (req, res) => {
     const { company_name, password } = req.body;
 
-    if (!company_name) {
-      return res.status(400).json({ error: "Company name is required" });
+    if (!company_name || !password) {
+      return res.status(400).json({ error: "Company name and Password is required" });
     }
 
     try {
+      const hashed_password = await bcrypt.hash(password, 12);
+
       const newInsuranceCompany = await prisma.iNSURANCE_COMPANY.create({
         data: {
           company_name,
+          password: hashed_password
         },
       });
+
+      console.log(newInsuranceCompany);
+
       // res.status(201).json(newInsuranceCompany);
       createRefreshToken(res, newInsuranceCompany);
     } catch (error) {
