@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 // import { render } from "react-dom";
 import HomeSvg from "../../images/svg/home.svg";
 import { Link } from "react-router-dom";
-import ProgressBar from "../dashboard/common/ProgressBar";
+import WaveComponent from "./WaveComponent";
 export default function Main() {
     useEffect(() => {
         const handleParallax = (e) => {
@@ -70,11 +70,11 @@ export default function Main() {
 
             {/* Main Content */}
             <div className="relative z-10">
-                <main className=" h-[100vh] container mx-auto px-4 py-0">
+                <main className=" h-[83vh] container mx-auto px-4 py-0">
                     <nav className="bg-transparent flex justify-between items-center p-6  ">
-                        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-blue-600">
+                        <h2 className=" font-bold bg-clip-text text-primary">
                             AroHealth
-                        </h1>
+                        </h2>
                         <div className="flex gap-4">
                             <Link to='/login'>
                                 <button className="px-6 py-2 bg-primary text-white rounded-lg hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-0.5">
@@ -83,14 +83,14 @@ export default function Main() {
                             </Link>
                         </div>
                     </nav>
-                    <div className=" h-full grid lg:grid-cols-2 gap-2 items-center justify-center pb-40">
+                    <div className=" h-full grid lg:grid-cols-2 gap-2 items-center justify-center pb-36">
                         <div className="space-y-8 h-full  flex flex-col justify-center">
                             <h2 className="text-5xl md:text-7xl font-bold leading-tight">
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-blue-600">
+                                <span className="bg-clip-text text-primary">
                                     Health made simple, care made personal
                                 </span>
                             </h2>
-                            <p className="text-xl text-gray-600 max-w-lg">
+                            <p className="text-xl font-bold max-w-lg">
                                 Experience the future of healthcare delivery with our innovative
                                 platform
                             </p>
@@ -105,7 +105,7 @@ export default function Main() {
                                 </button>
                             </div>
                         </div>
-                        <div className="relative w-[50vw]  h-full">
+                        <div className="relative w-[50vw]  ">
                             <img
                                 src={HomeSvg}
                                 alt="Medical professionals using modern technology"
@@ -136,6 +136,7 @@ export default function Main() {
                     />
                 </svg>
             </div>
+            <WaveComponent />
 
             <style jsx>{`
           .bg-noise {
