@@ -8,9 +8,9 @@ const AdminMain = () => {
       <div className="h-[100vh] w-[18%] ">
         <AdminSidebar />
       </div>
-      <div className="w-[82%] flex flex-col bg-[#F1F5F9]">
+      <div className="w-[82%] h-[100vh] flex flex-col bg-[#F1F5F9]">
         <Topbar />
-        <div className="">
+        <div className="h-[calc(100vh - 5rem)]">
           <Outlet />
         </div>
       </div>

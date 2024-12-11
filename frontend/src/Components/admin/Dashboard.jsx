@@ -17,19 +17,19 @@ const Dashboard = () => {
 
 
     return (
-        <div className='p-10 flex'>
-            <div className="flex">
+        <div className='h-full p-10 flex w-full my-border'>
+            <div className="flex w-1/2 my-border">
                 user info
             </div>
-            <div className="flex flex-col">
-                <div className="">
+            <div className="flex flex-col w-1/2">
+                <div className="my-border">
                     progress bar
                 </div>
-                <div className="flex">
-                    <div className="">
+                <div className="flex w-full">
+                    <div className="my-border">
                         latest Consultation
                     </div>
-                    <div className="">
+                    <div className="my-border">
                         medical record
                     </div>
                 </div>
