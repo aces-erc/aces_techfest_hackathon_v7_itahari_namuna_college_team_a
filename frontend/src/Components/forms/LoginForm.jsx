@@ -83,7 +83,7 @@ const LoginForm = () => {
                                     name="email"
                                     id="email"
                                     placeholder="User Id"
-                                    className="font-semibold border-0 !border-b-2  w-[80%]  px-8"
+                                    className="font-semibold border-0 !border-b-2  w-[80%] outline-none px-8"
                                     onChange={handleInput}
                                     required
                                 />
@@ -95,7 +95,7 @@ const LoginForm = () => {
                                     type="password"
                                     name="password"
                                     placeholder="Password"
-                                    className="font-semibold border-0 !border-b-2 w-[80%]   px-8"
+                                    className="outline-none font-semibold border-0 !border-b-2 w-[80%]   px-8"
                                     onChange={handleInput}
                                     autoComplete="on"
                                     required
@@ -115,7 +115,7 @@ const LoginForm = () => {
                             <button
                                 type="submit"
                                 onClick={handleSubmit}
-                                className="bg-[#79db7c] p-2 px-4 font-bold rounded-sm hover:bg-primary transition-colors duration-200 mt-8"
+                                className="bg-primary p-2 px-4 font-bold rounded-sm hover:bg-[#79db7c] transition-colors duration-200 mt-8"
                             >
                                 Sign In
                             </button>
