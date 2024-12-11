@@ -22,6 +22,7 @@ app.use(
   }),
 );
 
+
 const node_server = createServer(app);
 
 const io = new Server(node_server, {
@@ -37,6 +38,8 @@ socketController(io);
 app.use("/user/", userRoutes);
 app.use("/insurance/", insuranceRoutes);
 app.use("/login", authRoutes);
+
+
 
 app.get("/", (req, res) => {
   res.send("hello via backend!");
