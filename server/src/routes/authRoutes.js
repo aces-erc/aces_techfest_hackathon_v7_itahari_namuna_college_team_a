@@ -1,9 +1,8 @@
-import e from "express";
+import express from "express";
 const router = express.Router();
 import { userController } from "../controller/userController.js";
+import insuranceCompanyOnly from "../middleware/authmiddleware.js";
 
-router.post("/createuser", insuranceCompanyOnly, userController.createPatients);
+router.post("/createuser", insuranceCompanyOnly, userController.createUser);
 
-module.exports = router;
-
-const insuranceCompanyOnly = require("./middleware/authMiddleware");
+export default router;

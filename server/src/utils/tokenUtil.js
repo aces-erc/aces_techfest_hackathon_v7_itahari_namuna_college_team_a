@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken.js";
+import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-default-secret"; // Replace with your actual secret key
 const TOKEN_EXPIRATION = "1h";
@@ -26,7 +26,7 @@ const verifyToken = (token) => {
   }
 };
 
-module.exports = {
+export default {
   generateToken,
   verifyToken,
 };

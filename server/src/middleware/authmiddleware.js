@@ -1,4 +1,4 @@
-const { verifyToken } = require("../utils/tokenUtil");
+import verifyToken from "../utils/tokenUtil.js";
 
 /**
  * Middleware to allow only insurance companies to perform certain actions.
@@ -36,4 +36,4 @@ const insuranceCompanyOnly = (req, res, next) => {
   }
 };
 
-module.exports = insuranceCompanyOnly;
+export default insuranceCompanyOnly;
