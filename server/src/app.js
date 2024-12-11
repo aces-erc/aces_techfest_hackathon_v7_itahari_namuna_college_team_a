@@ -2,6 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 import userRoutes from "./routes/userRoutes.js";
 import insuranceRoutes from "../src/routes/insuranceRoutes.js";
@@ -20,7 +22,20 @@ app.use(
   }),
 );
 
-app.use("/user", userRoutes);
+
+const node_server = createServer(app);
+
+const io = new Server(node_server, {
+  cors: {
+    origin: process.env.FRONTEND_ORIGIN,
+    credentials: true,
+  },
+});
+
+// socket io sending configuration
+socketController(io);
+
+app.use("/user/", userRoutes);
 app.use("/insurance/", insuranceRoutes);
 app.use("/login", authRoutes);
 
