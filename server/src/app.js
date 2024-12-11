@@ -20,9 +20,11 @@ app.use(
   }),
 );
 
-app.use("/user/", userRoutes);
+app.use("/user", userRoutes);
 app.use("/insurance/", insuranceRoutes);
 app.use("/login", authRoutes);
+
+
 
 app.get("/", (req, res) => {
   res.send("hello via backend!");

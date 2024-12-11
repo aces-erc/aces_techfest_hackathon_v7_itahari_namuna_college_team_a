@@ -5,6 +5,7 @@ import { statusFunc } from "../utils/statusFunc.js";
 
 const prisma = new PrismaClient();
 
+// INSURANCE COMPANY CREATES USER / PATIENTS [USER LOGIN DETAILS ]
 export const registerController = async (req, res) => {
   const {
     role,
