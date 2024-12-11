@@ -19,7 +19,7 @@ app.use(
   }),
 );
 
-app.use("/patinets/", patientRoutes);
+app.use("/patients/", patientRoutes);
 app.use("/insurance/", insuranceRoutes);
 
 app.get("/", (req, res) => {
