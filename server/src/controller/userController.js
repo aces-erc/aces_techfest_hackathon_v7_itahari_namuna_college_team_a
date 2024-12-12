@@ -209,9 +209,44 @@ export const userController = {
     });
   }),
 
-  logoutUser: async (req, res) => {
+  logoutUser: async (_req, res) => {
     res.clearCookie("jwt");
     // Implement logout logic here, e.g., invalidate token or session
     res.json({ message: "Logged out successfully" });
+  },
+  getAllUsers: async (_req, res) => {
+    try {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+          dob: true,
+          gender: true,
+          email: true,
+          address: true,
+          phone: true,
+          role: true,
+          balance: true,
+          bloodGroup: true,
+          insurance_company: {
+            select: {
+              company_name: true,
+            },
+          },
+        },
+      });
+
+      if (!users.length) {
+        return res.status(404).json({ error: "No users found" });
+      }
+
+      res.status(200).json(users);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving users" });
+    }
   },
 };
