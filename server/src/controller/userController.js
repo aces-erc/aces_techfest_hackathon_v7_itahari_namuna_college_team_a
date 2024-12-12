@@ -38,7 +38,6 @@ const checkUser = async (phone) => {
   return prisma.user.findUnique({ where: { phone } });
 };
 
-// REGISTER USER BY INSURANCE COMPANY
 export const userController = {
   createUser: async (req, res) => {
     try {
@@ -69,6 +68,17 @@ export const userController = {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
+      const insuranceCompany = await prisma.iNSURANCE_COMPANY.findUnique({
+        where: { id: insurance_company_id },
+        select: {
+          company_name: true, // Fetch the company's name
+        },
+      });
+
+      if (!insuranceCompany) {
+        return res.status(404).json({ error: "Insurance company not found" });
+      }
+
       const hashed_password = await bcrypt.hash(password, 12);
 
       const existingUser = await checkUser(phone);
@@ -92,7 +102,12 @@ export const userController = {
         },
       });
 
-      res.status(201).json(newUser);
+      res.status(201).json({
+        ...newUser,
+        insuranceCompany: {
+          company_name: insuranceCompany.company_name,
+        },
+      });
     } catch (error) {
       console.error(error);
       res
@@ -103,8 +118,9 @@ export const userController = {
 
   userProfile: async (req, res) => {
     try {
-      console.log(req.params.id)
-      const userId = req.params.id; // Assume user ID is passed as a URL parameter
+      console.log(req.params.id);
+
+      const userId = parseInt(req.params.id); // Assume user ID is passed as a URL parameter
 
       const user = await prisma.user.findUnique({
         where: { id: userId },
@@ -116,6 +132,7 @@ export const userController = {
           email: true,
           address: true,
           phone: true,
+          role: true,
           balance: true,
           bloodGroup: true,
           insurance_company_id: true,
@@ -142,9 +159,14 @@ export const userController = {
       where: {
         phone,
       },
+      include: {
+        insurance_company: {
+          select: {
+            company_name: true, // Fetch the company name
+          },
+        },
+      },
     });
-
-    console.log(user);
 
     if (!user) {
       return res.status(401).json({ error: "User not found" });
@@ -156,13 +178,76 @@ export const userController = {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    createRefreshToken(res, user);
+    const token = jwtToken(user.id);
+
+    res.cookie("jwt", token, {
+      expires: new Date(
+        Date.now() +
+          process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
+      ),
+      httpOnly: true,
+    });
+
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        gender: user.gender,
+        address: user.address,
+        dob: user.dob,
+        role: user.role,
+        bloodGroup: user.bloodGroup,
+        balance: user.balance,
+        insurance_company: {
+          company_name: user.insurance_company?.company_name || null,
+        },
+      },
+      token, // Return the token if needed on the frontend
+    });
   }),
 
-  logoutUser: async (req, res) => {
+  logoutUser: async (_req, res) => {
     res.clearCookie("jwt");
     // Implement logout logic here, e.g., invalidate token or session
     res.json({ message: "Logged out successfully" });
   },
-};
+  getAllUsers: async (_req, res) => {
+    try {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+          dob: true,
+          gender: true,
+          email: true,
+          address: true,
+          phone: true,
+          role: true,
+          balance: true,
+          bloodGroup: true,
+          insurance_company: {
+            select: {
+              company_name: true,
+            },
+          },
+        },
+      });
 
+      if (!users.length) {
+        return res.status(404).json({ error: "No users found" });
+      }
+
+      res.status(200).json(users);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving users" });
+    }
+  },
+};

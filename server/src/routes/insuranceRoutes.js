@@ -40,7 +40,11 @@ router.delete(
   insuranceCompanyController.DeleteHospital,
 );
 
-router.get("/getall", InsuranceCompanyMiddleware, insuranceCompanyController.getInsuranceCompanies);
+router.get(
+  "/getall",
+  InsuranceCompanyMiddleware,
+  insuranceCompanyController.getInsuranceCompanies,
+);
 router.get(
   "/getinsurancecompany/:id",
   insuranceCompanyController.getInsuranceCompanyById,
@@ -53,6 +57,12 @@ router.post(
   "/createuser",
   InsuranceCompanyMiddleware,
   userController.createUser,
+);
+
+router.get(
+  "/getallusers",
+  InsuranceCompanyMiddleware,
+  userController.getAllUsers,
 );
 
 export default router;

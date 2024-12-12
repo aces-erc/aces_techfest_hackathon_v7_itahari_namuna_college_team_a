@@ -37,7 +37,7 @@ export const InsuranceCompanyContextProvider = ({ children }) => {
       setCurrentInsuranceCompany(null);
       setError(
         err.response?.data?.message ||
-          "Failed to fetch insurance company details",
+        "Failed to fetch insurance company details",
       );
 
       throw err;

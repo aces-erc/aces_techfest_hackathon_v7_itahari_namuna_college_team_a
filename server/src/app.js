@@ -42,8 +42,7 @@ socketController(io);
 
 // Routes
 app.use("/user/", userRoutes);
-app.use("/insurance/", insuranceRoutes);  
-app.use("/login", authRoutes);
+app.use("/insurance/", insuranceRoutes);
 app.use("/hospital", hospitalRoutes);
 
 // Simple test route
