@@ -10,6 +10,7 @@ import { FaLaptopMedical } from "react-icons/fa";
 import { MdManageHistory } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { FaBox, FaUser } from "react-icons/fa6";
+import { FormInput } from "lucide-react";
 
 const AdminSidebar = () => {
   const [activeSection, setActiveSection] = useState("");
@@ -121,6 +122,15 @@ const AdminSidebar = () => {
                     <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
                       <FaQrcode className='text-lg' />
                       Share QR
+
+                    </button>
+                  </Link>
+                </li>
+                <li class="hs-accordion" id="projects-accordion">
+                  <Link to='/user/dashboard/healthentryform/'>
+                    <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
+                      <FormInput className='text-lg' />
+                      Fill Health Form
 
                     </button>
                   </Link>

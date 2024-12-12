@@ -53,7 +53,7 @@ const HealthEntryForm = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="SBP" className="block text-sm font-medium text-gray-700">
-            Systolic Blood Pressure (SBP)
+            Systolic Blood Pressure (SBP) / Upper limit
           </label>
           <input
             type="number"
@@ -67,7 +67,7 @@ const HealthEntryForm = () => {
         </div>
         <div>
           <label htmlFor="DBP" className="block text-sm font-medium text-gray-700">
-            Diastolic Blood Pressure (DBP)
+            Diastolic Blood Pressure (DBP) / Lower limit
           </label>
           <input
             type="number"
