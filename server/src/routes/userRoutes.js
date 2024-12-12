@@ -33,6 +33,6 @@ router.delete(
   authMiddleware,
   HospitalReportController.deleteReport,
 );
+router.get("/userprofile", userController.userProfile);
 
 export default router;
-
