@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import api from './path/to/axios-interceptor';
+import api from "../utils/axiosInterceptor";
+
 
 export const AuthContext = createContext();
 
