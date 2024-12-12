@@ -37,5 +37,13 @@ router.get("/userprofile/:id", userController.userProfile);
 
 router.get("/show_latest_report", authMiddleware, userController.show_latest_report);
 
-router.get("/show_user_information", authMiddleware, userController.get_all_user_uploaded_information);
+
+// new routes
+router.get("/show_all_report", authMiddleware, userController.show_all_report);
+
+router.get("/show_all_user_information", authMiddleware, userController.get_all_user_uploaded_information);
+
+// user le upload garako xray and report  
+router.get("/get_all_user_uploaded_files", authMiddleware, userController.get_all_user_uploaded_files);
+
 export default router;

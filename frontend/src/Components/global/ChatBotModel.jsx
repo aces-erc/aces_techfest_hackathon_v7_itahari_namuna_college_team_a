@@ -21,15 +21,20 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
     },
   ]);
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/show-latest-report').then((res) => {
-      console.log(res);
+  useEffect(async () => {
+    // await axios.get('http://localhost:8000/user/show_user_information').then((res) => {
+    //   console.log(res);
 
-      setData(res);
+    //   setData(res);
 
-    }).catch((err) => {
-      console.error(err);
+    // })
+
+    const response = await axios({
+      method: "GET",
+      url: "http://localhost:8000/user/show_user_information",
     })
+
+    console.log(response);
   }, []);
 
   useEffect(() => {
@@ -57,8 +62,10 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
   const handlePrompt = () => {
 
     let prompt;
-    if (count === 0) {
+    
+    alert(count);
 
+    if (count === 0) {
       setMessages(prev => [
         ...prev,
         {
