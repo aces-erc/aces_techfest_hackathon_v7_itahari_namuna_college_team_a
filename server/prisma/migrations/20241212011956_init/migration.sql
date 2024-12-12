@@ -24,8 +24,9 @@ CREATE TABLE `HealthRecord` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `bloodPressure` VARCHAR(191) NOT NULL,
-    `sugarLevel` DOUBLE NOT NULL,
+    `bloodPressure` VARCHAR(191) NULL,
+    `sugarLevel` JSON NOT NULL,
+    `description` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -36,8 +37,12 @@ CREATE TABLE `HealthRecord` (
 CREATE TABLE `Hospital` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `hospital_name` VARCHAR(191) NOT NULL,
+    `username` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `hospital_address` VARCHAR(191) NOT NULL,
+    `role` ENUM('HOSPITAL', 'PATIENTS', 'DOCTOR', 'INSURANCE_COMPANY') NOT NULL DEFAULT 'HOSPITAL',
 
+    UNIQUE INDEX `Hospital_username_key`(`username`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

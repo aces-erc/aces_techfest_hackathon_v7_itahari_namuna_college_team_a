@@ -10,9 +10,8 @@ const prisma = new PrismaClient();
  * @param {Object} res - Express response object.
  * @param {Function} next - Express next middleware function.
  */
-const authMiddleware = async(req, res, next) => {
-  const cookies = req.cookies.jwt;
-  
+const InsuranceCompanyMiddleware = async (req, res, next) => {
+  const cookies = req.cookies.Insurance_Company;
 
   if (!cookies) {
     return res
@@ -20,12 +19,11 @@ const authMiddleware = async(req, res, next) => {
       .json({ success: false, message: "Unauthorized: No token provided." });
   };
 
-  const decoded_user = jwt.verify(cookies, process.env.JWT_SECRET);
-  console.log(decoded_user);
-
+  const decoded_insurance_company = jwt.verify(cookies, process.env.JWT_SECRET);
+  
+  
   try {
-    const decoded = await prisma.iNSURANCE_COMPANY.findUnique({where: {id: decoded_user.id}})
-
+    const decoded = await prisma.iNSURANCE_COMPANY.findUnique({ where: { id: decoded_insurance_company.id } })
     if (decoded.role !== "INSURANCE_COMPANY") {
       return res.status(403).json({
         success: false,
@@ -33,7 +31,7 @@ const authMiddleware = async(req, res, next) => {
       });
     }
 
-    req.user = decoded;
+    res.user = decoded;
     next();
   } catch (error) {
     console.log(error)
@@ -44,4 +42,4 @@ const authMiddleware = async(req, res, next) => {
   }
 };
 
-export default authMiddleware;
+export default InsuranceCompanyMiddleware;
