@@ -9,15 +9,17 @@ const HospitalReportController = {
    */
   addReport: async (req, res) => {
     try {
-      const { userId } = req.body;
+      // const { userId } = req.body;
+      const userId = res.user.id;
 
       // Ensure the user ID is provided
       if (!userId) {
         return res.status(400).json({ error: "User ID is required." });
       }
 
+
       // Ensure a file is uploaded
-      if (!req.file) {
+      if (!req.files) {
         return res.status(400).json({ error: "File upload is required." });
       }
 
