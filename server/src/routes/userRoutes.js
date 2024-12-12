@@ -26,7 +26,7 @@ router.post(
     { name: "xray", maxCount: 5 },
     { name: "report", maxCount: 5 },
   ]),
-  HospitalReportController.,
+  HospitalReportController.addReport,
 );
 router.delete(
   "/delete_medical_report",

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/extension";
 import path from "path";
 import fs from "fs";
-export const HospitalReportController = {
+const HospitalReportController = {
   /**
    * Add a new hospital report for a user
    * @param {Request} req
@@ -119,3 +119,6 @@ export const HospitalReportController = {
     }
   },
 };
+
+
+export default HospitalReportController;
