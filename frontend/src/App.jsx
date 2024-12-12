@@ -42,7 +42,7 @@ const App = () => {
       element: <HeroSection />
     },
     {
-      path: "/admin/dashboard",
+      path: "/user/dashboard",
       element: (
         <div>
           <AdminMain />
@@ -50,19 +50,19 @@ const App = () => {
       ),
       children: [
         {
-          path: "/admin/dashboard/",
+          path: "/user/dashboard/",
           element: <Dashboard />
         },
         {
-          path: "/admin/dashboard/chat/",
+          path: "/user/dashboard/chat/",
           element: <Chat />
         },
         {
-          path: "/admin/dashboard/medical-history/",
+          path: "/user/dashboard/medical-history/",
           element: <MedicalHistory />
         },
         {
-          path: "/admin/dashboard/Consultation-history/",
+          path: "/user/dashboard/Consultation-history/",
           element: <ConsultationHistory />
         },
       ]

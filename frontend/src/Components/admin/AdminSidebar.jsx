@@ -77,7 +77,7 @@ const AdminSidebar = () => {
             <nav class="hs-accordion-group p-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
               <ul class="flex flex-col space-y-1">
                 <li class="hs-accordion" id="users-accordion">
-                  <Link to='/admin/dashboard'>
+                  <Link to='/user/dashboard'>
 
                     <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="users-accordion-child">
 
@@ -98,7 +98,7 @@ const AdminSidebar = () => {
 
                 </li>
                 <li class="hs-accordion" id="users-accordion">
-                  <Link to='/admin/dashboard/chat'>
+                  <Link to='/user/dashboard/chat'>
                     <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="users-accordion-child">
                       <IoChatboxEllipsesOutline className='text-lg' />
                       chat
@@ -109,36 +109,8 @@ const AdminSidebar = () => {
 
                 </li>
 
-                <li class="hs-accordion" id="account-accordion">
-                  <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="account-accordion-child">
-                    <MdOutlineManageAccounts className='text-lg' />
-                    Account
-
-
-                  </button>
-
-                  {/* <div id="account-accordion-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden" role="region" aria-labelledby="account-accordion">
-                    <ul class="ps-8 pt-1 space-y-1">
-                      <li>
-                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300" href="#">
-                          Link 1
-                        </a>
-                      </li>
-                      <li>
-                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300" href="#">
-                          Link 2
-                        </a>
-                      </li>
-                      <li>
-                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300" href="#">
-                          Link 3
-                        </a>
-                      </li>
-                    </ul>
-                  </div> */}
-                </li>
                 <li class="hs-accordion" id="projects-accordion">
-                  <Link to='/admin/dashboard/medical-history/'>
+                  <Link to='/user/dashboard/medical-history/'>
                     <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
                       <FaLaptopMedical className='text-lg' />
                       Medical history
@@ -147,7 +119,7 @@ const AdminSidebar = () => {
                   </Link>
                 </li>
                 <li class="hs-accordion" id="projects-accordion">
-                  <Link to='/admin/dashboard/Consultation-history/'>
+                  <Link to='/user/dashboard/Consultation-history/'>
                     <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
                       <MdManageHistory className='text-lg' />
                       Consultation history
