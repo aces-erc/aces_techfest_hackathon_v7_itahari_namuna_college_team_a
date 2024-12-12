@@ -14,7 +14,7 @@ const ManageUser = () => {
                 </div>
                 <span>
 
-                    <span className='text-primary font-bold '>Total User: </span> 200
+                    <span className='text-primary font-bold '>Total User: </span> 4
                 </span>
             </div>
         </>

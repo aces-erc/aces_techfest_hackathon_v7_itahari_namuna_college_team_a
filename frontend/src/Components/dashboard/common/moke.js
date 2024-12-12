@@ -16,6 +16,22 @@ export const data = [
     },
   },
   {
+    id: 9,
+    first_name: "Sagar",
+    last_name: "Adhikari",
+    email: "sagar.adhikari@example.com",
+    phone: "9812345678",
+    gender: "MALE",
+    address: "Pokhara, Kaski",
+    dob: "1990-11-12T00:00:00.000Z",
+    role: "PATIENTS",
+    bloodGroup: "B+",
+    balance: 1200,
+    insurance_company: {
+      company_name: "Reliable Insurance",
+    },
+  },
+  {
     id: 11,
     first_name: "Rekha",
     last_name: "Magar",

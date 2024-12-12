@@ -20,7 +20,7 @@ const MiniUserDetail = () => {
                         </span>
                         <span className='flex justify-between text-justify'>
 
-                            <span className='font-bold'>Last Name: </span>Adikari
+                            <span className='font-bold'>Last Name: </span>Adhikari
                         </span>
                         <span className='flex justify-between text-justify'>
                             <span className='font-bold'>Gender: </span>Male
@@ -38,7 +38,7 @@ const MiniUserDetail = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                     <span className='flex gap-8 justify-between'>
-                        <span className='font-bold'>Full Address: </span>Itahari-8, khosi
+                        <span className='font-bold'>Full Address: </span>Itahari-8, koshi province
                     </span>
                     <span className='flex gap-8 justify-between'>
 

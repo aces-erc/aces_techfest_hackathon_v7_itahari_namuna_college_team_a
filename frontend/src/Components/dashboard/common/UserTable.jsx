@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { data } from './moke'
 
 const UserTable = () => {
     return (
@@ -14,8 +15,8 @@ const UserTable = () => {
             <table className="text-left w-full">
                 <thead className="bg-black flex text-white w-full">
                     <tr className="flex w-full mb-4">
-                        <th className="p-4 w-1/4">S.N</th>
                         <th className="p-4 w-1/4">Name</th>
+                        <th className="p-4 w-1/4">Email</th>
                         <th className="p-4 w-1/4">Address</th>
                         <th className="p-4 w-1/4">Phone</th>
                         <th className="p-4 w-1/4">Action</th>
@@ -25,16 +26,23 @@ const UserTable = () => {
                     className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full"
                     style={{ height: "50vh" }}
                 >
-                    {Array(7).fill(null).map((_, index) => (
-                        <tr key={index} className="flex w-full mb-4">
-                            <td className="p-4 w-1/4">Dogs</td>
-                            <td className="p-4 w-1/4">Cats</td>
-                            <td className="p-4 w-1/4">Birds</td>
-                            <td className="p-4 w-1/4">Fish</td>
-                            <td className="p-4 w-1/4 flex gap-4"><button className='bg-red-600 p-1 px-2 rounded-md'>Delete</button>
-                                <button className='bg-blue-600 p-1 px-2 rounded-md'>Edit</button></td>
-                        </tr>
-                    ))}
+                    {
+                        data.map((item, index) => {
+
+                            return (
+                                item.role === 'PATIENTS' &&
+                                <tr key={index} className="flex w-full mb-4">
+                                    <td className="p-4 w-1/4">{item.first_name}{item.last_name}</td>
+                                    <td className="p-4 w-1/4">{item.email}</td>
+                                    <td className="p-4 w-1/4">{item.address}</td>
+                                    <td className="p-4 w-1/4">{item.phone}</td>
+                                    <td className="p-4 w-1/4 flex gap-4"><button className='bg-red-600 p-1 px-2 rounded-md'>Delete</button>
+                                        <button className='bg-blue-600 p-1 px-2 rounded-md'>Edit</button></td>
+                                </tr>
+
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>
