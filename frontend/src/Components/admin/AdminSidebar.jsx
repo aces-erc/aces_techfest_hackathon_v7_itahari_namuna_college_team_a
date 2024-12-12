@@ -101,7 +101,7 @@ const AdminSidebar = () => {
                   <Link to='/user/dashboard/chat'>
                     <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="users-accordion-child">
                       <IoChatboxEllipsesOutline className='text-lg' />
-                      chat
+                      AroGen AI
 
                     </button>
                   </Link>
