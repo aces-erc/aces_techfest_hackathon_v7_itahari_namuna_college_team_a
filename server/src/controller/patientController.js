@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import catchAsync from "../utils/catchAsync.js";
 import statusFunc from "../utils/statusFunc.js";
 
-
 const prisma = new PrismaClient();
 
 /* 
@@ -61,43 +60,43 @@ const prisma = new PrismaClient();
     */
 
 export const record_medical_status = catchAsync(async (req, res) => {
-    const user = res.user;
+  const user = res.user;
 
-    if (!user || !user.id) {
-        return res.status(401).json({
-            success: false,
-            message: "Unauthorized: User not found in the request.",
-        });
-    }
-
-    const report = req.body;
-
-    if (!report) {
-        return res.status(400).json({
-            success: false,
-            message: "Please insert data!",
-        });
-    }
-
-    // Ensure valid data for each field
-    const medical_information = await prisma.healthRecord.create({
-        data: {
-            user_id: user.id, // Set the authenticated user's ID
-            date: new Date(), // Use current date and time
-            bloodPressure: report.bloodPressure ? JSON.stringify(report.bloodPressure) : null, // Convert to JSON if provided
-            sugarLevel: report.sugarLevel ? parseInt(report.sugarLevel) : null,
-            description: report.description || null, // Use null if not provided
-        },
+  if (!user || !user.id) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized: User not found in the request.",
     });
+  }
 
-    // Respond with success
-    res.status(201).json({
-        success: true,
-        message: "Medical record created successfully.",
-        data: medical_information,
+  const report = req.body;
+
+  if (!report) {
+    return res.status(400).json({
+      success: false,
+      message: "Please insert data!",
     });
+  }
+
+  // Ensure valid data for each field
+  const medical_information = await prisma.healthRecord.create({
+    data: {
+      user_id: user.id, // Set the authenticated user's ID
+      date: new Date(), // Use current date and time
+      bloodPressure: report.bloodPressure
+        ? JSON.stringify(report.bloodPressure)
+        : null, // Convert to JSON if provided
+      sugarLevel: report.sugarLevel ? parseInt(report.sugarLevel) : null,
+      description: report.description || null, // Use null if not provided
+    },
+  });
+
+  // Respond with success
+  res.status(201).json({
+    success: true,
+    message: "Medical record created successfully.",
+    data: medical_information,
+  });
 });
 
-export const hospital_report = catchAsync(async(req, res) => {
-
-});
+export default { record_medical_status };
