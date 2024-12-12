@@ -45,7 +45,7 @@ model HealthRecord {
   user          User     @relation(fields: [user_id], references: [id])
   date          DateTime @default(now())
   bloodPressure String?
-  sugarLevel    Json
+  sugarLevel    Float?
   description   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -57,8 +57,6 @@ model Hospital {
   username               String                 @unique
   password               String
   hospital_address       String
-  role                 Role              @default(HOSPITAL)
-
   insurance_companies    INSURANCE_COMPANY[]    @relation("HospitalInsuranceCompanies")
   doctors                Doctor[]               @relation("HospitalDoctors")
 }
@@ -82,3 +80,4 @@ model INSURANCE_COMPANY {
   users        User[]     @relation("UserInsuranceCompany")
   hospitals    Hospital[] @relation("HospitalInsuranceCompanies")
 }
+

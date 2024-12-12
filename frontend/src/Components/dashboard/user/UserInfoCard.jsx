@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../../../Context/authContext'; 
-import { User, Mail, Phone, Calendar, MapPin } from 'lucide-react';
+import { Calendar, Mail, MapPin, Phone, User } from 'lucide-react';
+import React from 'react';
+import { useAuth } from '../../../Context/authContext';
 
 const UserInfoCard = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
 
 
   if (!user || user.role !== 'PATIENTS') {
