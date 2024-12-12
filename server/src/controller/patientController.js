@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import catchAsync from "../utils/catchAsync.js";
-import statusFunc from "../utils/statusFunc.js";
 
 const prisma = new PrismaClient();
 
@@ -20,8 +19,9 @@ const Medical_Report = [
       DBP: 85,
       HP: 75,
     },
-    suger_level: 105,
-    description: "Feeling slightly fatigued today, but no significant discomfort. Mild headache.",
+    sugar_level: 105,
+    description:
+      "Feeling slightly fatigued today, but no significant discomfort. Mild headache.",
   },
   {
     day: 3,
@@ -30,8 +30,9 @@ const Medical_Report = [
       DBP: 78,
       HP: 70,
     },
-    suger_level: 98,
-    description: "Feeling better, energy levels are back to normal. No major symptoms today.",
+    sugar_level: 98,
+    description:
+      "Feeling better, energy levels are back to normal. No major symptoms today.",
   },
   {
     day: 4,
@@ -40,8 +41,9 @@ const Medical_Report = [
       DBP: 85,
       HP: 80,
     },
-    suger_level: 110,
-    description: "Slight dizziness today. Blood pressure was a bit high in the morning.",
+    sugar_level: 110,
+    description:
+      "Slight dizziness today. Blood pressure was a bit high in the morning.",
   },
   {
     day: 5,
@@ -50,12 +52,11 @@ const Medical_Report = [
       DBP: 75,
       HP: 70,
     },
-    suger_level: 102,
-    description: "Feeling great, no issues with blood pressure or sugar level today. Active and energetic.",
+    sugar_level: 102,
+    description:
+      "Feeling great, no issues with blood pressure or sugar level today. Active and energetic.",
   },
-]
-
-
+];
 
 export const record_medical_status = catchAsync(async (req, res) => {
   const user = res.user;
@@ -67,48 +68,35 @@ export const record_medical_status = catchAsync(async (req, res) => {
     });
   }
 
-  const report = req.body;
-
-  if (!report) {
-    return res.status(400).json({
-      success: false,
-      message: "Please insert data!",
-    });
-  }
-
-  // Ensure valid data for each field
   try {
+    // Loop through the predefined medical reports
     for (let data of Medical_Report) {
-      // Validate data before processing
-      if (!data) {
-        console.error("Invalid data entry:", data);
-        continue;
-      }
-
+      // Create health records in the database
       await prisma.healthRecord.create({
         data: {
-          user_id: user.id, // Set the authenticated user's ID
-          date: new Date(), // Use current date and time
-          bloodPressure: data.bloodPressure
-            ? JSON.stringify(data.bloodPressure) // Convert to JSON if provided
-            : null,
-          sugarLevel: data.sugarLevel ? parseInt(data.sugarLevel) : null,
-          description: data.description || null, // Use null if not provided
+          user_id: user.id, // User ID from the request
+          date: new Date(), // Current date
+          bloodPressure: data.blood_pressure
+            ? JSON.stringify(data.blood_pressure)
+            : null, // Convert object to JSON if present
+          sugarLevel: data.sugar_level || null, // Default to null if not provided
+          description: data.description || null, // Default to null if not provided
         },
       });
     }
 
-    console.log("Medical reports saved successfully!");
+    res.status(201).json({
+      success: true,
+      message: "Medical records created successfully.",
+    });
   } catch (error) {
-    console.error("Error saving medical reports:", error.message);
+    console.error("Error saving medical records:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Error saving medical records.",
+      error: error.message,
+    });
   }
-
-  // Respond with success
-  res.status(201).json({
-    success: true,
-    message: "Medical record created successfully.",
-    data: "uploaded",
-  });
 });
 
 export default { record_medical_status };
