@@ -1,34 +1,38 @@
 import express from "express";
 import { userController } from "../controller/userController.js";
 import authMiddleware from "../middleware/authmiddleware.js";
-import { record_medical_status, hospital_report } from "../controller/patientController.js";
-import {
-    multer,
-    storage
-} from "./../Helper/Multer.js";
+import { record_medical_status } from "../controller/patientController.js";
+import HospitalReportController from "../controller/HospitalReportController.js";
+import { multer, storage } from "./../Helper/Multer.js";
 
 const router = express.Router();
 
 const upload = multer({
-    storage
+  storage,
 });
 
-
-
-// USER LE K K ACCESS GARNU PAUNE 
+// USER LE K K ACCESS GARNU PAUNE
 router.post("/login", userController.loginUser);
 router.get("/logout", userController.logoutUser);
 
 // upload medical report blood pressure, sugar level and description
 router.post("/upload_medical_report", authMiddleware, record_medical_status);
 
-router.post("/hospital_report",
-    authMiddleware,
-    upload.fields([
-        { name: "xray", maxCount: 5 },
-        { name: "report", maxCount: 5 }
-    ]),
-    hospital_report
+// Upload hospital report with X-ray and report attachments
+router.post(
+  "/hospital_report",
+  authMiddleware,
+  upload.fields([
+    { name: "xray", maxCount: 5 },
+    { name: "report", maxCount: 5 },
+  ]),
+  HospitalReportController.,
+);
+router.delete(
+  "/delete_medical_report",
+  authMiddleware,
+  HospitalReportController.deleteReport,
 );
 
-export default router;  
+export default router;
+
