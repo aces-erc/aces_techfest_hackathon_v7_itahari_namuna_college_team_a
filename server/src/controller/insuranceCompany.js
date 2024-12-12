@@ -63,7 +63,7 @@ export const insuranceCompanyController = {
     }
   },
 
-  loginInsuranceCompany: catchAsync(async (req, res) => {
+  loginInsuranceCompany: async (req, res) => {
     const { company_name, password } = req.body;
   
     if (!company_name || !password) {
@@ -98,7 +98,7 @@ export const insuranceCompanyController = {
         error: "An error occurred while logging in",
       });
     }
-  }),
+  },
 
   createHospital: async (req, res) => {
     const insurance_id = req.user.id; // Gets the Insurance company ID from the authenticated user
