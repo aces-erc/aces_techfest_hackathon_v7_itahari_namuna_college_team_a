@@ -1,18 +1,15 @@
-import { FaFacebookF } from "react-icons/fa6";
-import { FaXTwitter } from "react-icons/fa6";
-import { IoLogoGoogle } from "react-icons/io5";
+import { useEffect, useState } from "react";
 import { FaUserAlt } from "react-icons/fa";
+import { FaFacebookF, FaXTwitter } from "react-icons/fa6";
+import { IoLogoGoogle } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
-import MySvg from "../../images/svg/login.svg";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useAuth } from "../../Context/authContext";
+import MySvg from "../../images/svg/login.svg";
 import Validation from "./LoginValidation";
-import axios from "axios";
-// import { AuthContext } from "../../context/AuthContext";
-import { AuthContext } from "../../Context/authContext";
 
 const LoginForm = () => {
-    const { login } = useContext(AuthContext);
+    const { login } = useAuth();
 
     const [err, setErr] = useState(null);
     const navigate = useNavigate();

@@ -51,10 +51,10 @@ export const userController = {
         address,
         password,
         phone,
+        bloodGroup,
         balance,
         insurance_company_id,
       } = req.body;
-
 
       if (
         !first_name ||
@@ -63,6 +63,7 @@ export const userController = {
         !password ||
         !gender ||
         !address ||
+        !bloodGroup ||
         !insurance_company_id
       ) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -70,8 +71,8 @@ export const userController = {
 
       const hashed_password = await bcrypt.hash(password, 12);
 
-      const existngUser = await checkUser(phone);
-      if (existngUser) {
+      const existingUser = await checkUser(phone);
+      if (existingUser) {
         return res.status(409).json({ error: "Phone number already exists" });
       }
 
@@ -85,6 +86,7 @@ export const userController = {
           email,
           address,
           phone,
+          bloodGroup,
           balance: balance || 0,
           insurance_company_id,
         },
@@ -98,7 +100,6 @@ export const userController = {
         .json({ error: "An error occurred while creating the user" });
     }
   },
-
 
   userProfile: async (req, res) => {
     try {
@@ -115,6 +116,7 @@ export const userController = {
           address: true,
           phone: true,
           balance: true,
+          bloodGroup: true,
           insurance_company_id: true,
         },
       });
@@ -131,7 +133,6 @@ export const userController = {
         .json({ error: "An error occurred while retrieving the user profile" });
     }
   },
-};
 
   loginUser: catchAsync(async (req, res) => {
     const { phone, password } = req.body;
@@ -142,26 +143,25 @@ export const userController = {
       },
     });
 
-    console.log(user)
+    console.log(user);
 
     if (!user) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: "User not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid password' });
+      return res.status(401).json({ error: "Invalid password" });
     }
 
     createRefreshToken(res, user);
   }),
 
   logoutUser: async (req, res) => {
-    res.clearCookie('jwt');
+    res.clearCookie("jwt");
     // Implement logout logic here, e.g., invalidate token or session
-    res.json({ message: 'Logged out successfully' });
+    res.json({ message: "Logged out successfully" });
   },
-}
-
+};
 
