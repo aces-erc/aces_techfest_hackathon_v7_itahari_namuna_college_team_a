@@ -7,28 +7,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/authContext";
 import MySvg from "../../images/svg/login.svg";
 import Validation from "./LoginValidation";
-// import { data } from '../dashboard/common/moke.js'
 
 const LoginForm = () => {
     const { login, currentUser } = useContext(AuthContext);
-    // console.log(currentUser);
-    const [value, setValue] = useState({})
-
-    const [err, setErr] = useState(null);
-    const navigate = useNavigate();
-
-
     const [values, setValues] = useState({
         phone: '',
         password: '',
     });
-
     const [errors, setErrors] = useState({});
+    const [err, setErr] = useState(null);
+    const navigate = useNavigate();
+
     useEffect(() => {
-        // Check for changes in the errors state
-        if (errors.phone === "" && errors.password === "") {
-            setErr("");
-        } else {
+        if (!errors.phone && !errors.password) {
             setErr(null);
         }
     }, [errors]);
@@ -38,43 +29,38 @@ const LoginForm = () => {
         const validationErrors = Validation(values);
 
         // Check for validation errors
-        if (Object.values(validationErrors).some((error) => error !== "")) {
+        if (Object.keys(validationErrors).some(key => validationErrors[key] !== "")) {
             setErrors(validationErrors);
-            setErr(null);
+            setErr(null); // Reset general error message
         } else {
             setErrors({});
             try {
-                // data.map((data, index) => {
-                //     if (data.phone === values.phone && data.password === values.password) {
-                //         console.log(data, "my login data");
-
-                //     }
-                // })
                 await login(values);
                 const res = JSON.parse(localStorage.getItem('currentUser'));
 
-                console.log(res.role, "response");
-
-                res.role === 'PATIENTS' && navigate('/user/dashboard');
-                res.role === 'INSURANCE' && navigate('/insurance/dashboard');
-                res.role === 'HOSPITAL' && navigate('/hospital/dashboard');
-
+                if (res?.role === 'PATIENTS') {
+                    navigate('/user/dashboard');
+                } else if (res?.role === 'INSURANCE') {
+                    navigate('/insurance/dashboard');
+                } else if (res?.role === 'HOSPITAL') {
+                    navigate('/hospital/dashboard');
+                }
             } catch (err) {
-                setErr(err.response.data);
+                // Check if err is an object and extract the message or set a fallback string
+                setErr(err.response?.data?.error || 'Something went wrong! Please try again.');
             }
         }
     };
-    // console.log(err);
 
     const handleInput = (e) => {
-        setValues(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setValues(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     return (
         <div className="w-full h-[100vh] grid place-items-center">
-            <div className="h-[80%] w-[65%]  rounded-xl shadow-2xl flex">
+            <div className="h-[80%] w-[65%] rounded-xl shadow-2xl flex">
                 <div className="h-full w-1/2 flex flex-col items-center">
-                    <img className="h-[90%] w-full" src={MySvg} alt="MySvg" />
+                    <img className="h-[90%] w-full" src={MySvg} alt="Login SVG" />
                     <NavLink to="/signup">
                         <p className="underline font-bold">Create an account</p>
                     </NavLink>
@@ -83,9 +69,7 @@ const LoginForm = () => {
                     <div className="flex flex-col justify-start">
                         <h3 className="w-full text-4xl font-bold">Login</h3>
                         <form
-                            action=""
-                            method="post"
-
+                            onSubmit={handleSubmit}
                             className="flex flex-col justify-center gap-4 items-start mt-12"
                         >
                             <div className="flex items-center w-full relative">
@@ -93,9 +77,9 @@ const LoginForm = () => {
                                 <input
                                     type="text"
                                     name="phone"
-                                    id="email"
+                                    id="phone" // Updated ID for better targeting
                                     placeholder="User Id"
-                                    className="font-semibold border-0 !border-b-2  w-[80%] outline-none px-8"
+                                    className="font-semibold border-0 !border-b-2 w-[80%] outline-none px-8"
                                     onChange={handleInput}
                                     required
                                 />
@@ -106,27 +90,28 @@ const LoginForm = () => {
                                 <input
                                     type="password"
                                     name="password"
+                                    id="password" // Added meaningful ID
                                     placeholder="Password"
-                                    className="outline-none font-semibold border-0 !border-b-2 w-[80%]   px-8"
+                                    className="outline-none font-semibold border-0 !border-b-2 w-[80%] px-8"
                                     onChange={handleInput}
                                     autoComplete="on"
                                     required
                                 />
                             </div>
-                            {errors.password !== "" && <span className="text-red-600">{errors.password}</span>}
+                            {errors.password && <span className="text-red-600">{errors.password}</span>}
                             <div className="flex justify-center items-center">
                                 <input
                                     className="cursor-pointer"
                                     type="checkbox"
                                     name="check"
-                                    id=""
+                                    id="remember-me"
                                 />{" "}
-                                <span className="pl-2 font-semibold"> Remember me</span>
+                                <span className="pl-2 font-semibold">Remember me</span>
                             </div>
-                            <span className="text-red-700">{err}</span>
+                            {/* Check if err is a string and render it */}
+                            {err && typeof err === 'string' && <span className="text-red-700">{err}</span>}
                             <button
                                 type="submit"
-                                onClick={handleSubmit}
                                 className="bg-primary p-2 px-4 font-bold rounded-sm hover:bg-[#79db7c] transition-colors duration-200 mt-8"
                             >
                                 Sign In
@@ -139,7 +124,6 @@ const LoginForm = () => {
                                 <button className="p-1 rounded-md text-white bg-black">
                                     <FaXTwitter />
                                 </button>
-                                {/* <GoogleAuth /> */}
                                 <button className="p-1 rounded-md text-white bg-[#DB4437]">
                                     <IoLogoGoogle />
                                 </button>
@@ -150,6 +134,6 @@ const LoginForm = () => {
             </div>
         </div>
     );
-}
+};
 
-export default LoginForm
+export default LoginForm;

@@ -53,7 +53,7 @@ export const Hospital_Login = async (req, res) => {
 
 export const Create_Doctor_Auth = catchAsync(async (req, res) => {
     const hospital_id = res.user.id; // Assuming `res.user.id` gives the logged-in hospital's ID
-    console.log("Heee", hospital_id)
+    console.log(hospital_id);
 
     const { username, password, phone } = req.body;
 

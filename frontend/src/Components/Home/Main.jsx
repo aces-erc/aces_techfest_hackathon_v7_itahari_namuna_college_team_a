@@ -138,6 +138,7 @@ export default function Main() {
                 </svg>
             </div>
             <WaveComponent />
+            <div className="h-[0.2rem] bg-primary w-full"></div>
 
             <style jsx>{`
           .bg-noise {
