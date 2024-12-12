@@ -26,7 +26,6 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
           credentials: 'include',
         });
 
-        console.log(response);
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -45,7 +44,7 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
           }).join('\n');
         }
 
-        console.log(data.data)
+        console.log(data.Tests_and_Reports)
         const paragraph = convertDataToParagraphs(data.data.Tests_and_Reports);
         console.log(paragraph)
         setData(paragraph);
