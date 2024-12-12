@@ -9,25 +9,29 @@ const prisma = new PrismaClient();
 const createRefreshToken = (res, userData) => {
   const id = userData.id;
   const token = jwtToken(id);
-  console.log(token)
+  console.log(token);
 
   res.cookie("Insurance_Company", token, {
     expires: new Date(
-      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000
+      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
-  })
+  });
 
-  statusFunc(res, 201, token)
-}
+  statusFunc(res, 201, token);
+};
 
 const jwtToken = (id) => {
-  return jwt.sign({
-    id
-  }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
-  })
-}
+  return jwt.sign(
+    {
+      id,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    },
+  );
+};
 
 const checkUser = async (phone) => {
   return prisma.user.findUnique({ where: { phone } });
@@ -38,9 +42,10 @@ export const insuranceCompanyController = {
     const { company_name, password } = req.body;
     console.log(company_name, password);
 
-
     if (!company_name || !password) {
-      return res.status(400).json({ error: "Company name and Password is required" });
+      return res
+        .status(400)
+        .json({ error: "Company name and Password is required" });
     }
 
     const hashed_password = await bcrypt.hash(password, 12);
@@ -48,7 +53,7 @@ export const insuranceCompanyController = {
     const newInsuranceCompany = await prisma.iNSURANCE_COMPANY.create({
       data: {
         company_name,
-        password: hashed_password
+        password: hashed_password,
       },
     });
 
@@ -56,14 +61,15 @@ export const insuranceCompanyController = {
 
     // res.status(201).json(newInsuranceCompany);
     createRefreshToken(res, newInsuranceCompany);
-
   }),
 
   loginInsuranceCompany: async (req, res) => {
     const { company_name, password } = req.body;
 
     if (!company_name || !password) {
-      return res.status(400).json({ error: "Company name and Password is required" });
+      return res
+        .status(400)
+        .json({ error: "Company name and Password is required" });
     }
 
     try {
@@ -80,7 +86,10 @@ export const insuranceCompanyController = {
       }
 
       // Compare the hashed passwords
-      const passwordMatch = await bcrypt.compare(password, insuranceCompany.password);
+      const passwordMatch = await bcrypt.compare(
+        password,
+        insuranceCompany.password,
+      );
 
       if (!passwordMatch) {
         return res.status(401).json({ error: "Invalid credentials" });
@@ -103,7 +112,9 @@ export const insuranceCompanyController = {
 
     // Validate required fields
     if (!hospital_name || !password || !hospital_address) {
-      return res.status(400).json({ error: "Hospital name, password, and address are required" });
+      return res
+        .status(400)
+        .json({ error: "Hospital name, password, and address are required" });
     }
 
     // Generate a unique username based on the hospital name
@@ -242,7 +253,6 @@ export const insuranceCompanyController = {
       });
     }
   },
-
 
   getInsuranceCompanies: async (req, res) => {
     try {
