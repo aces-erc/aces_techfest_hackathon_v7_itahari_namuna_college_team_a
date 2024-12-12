@@ -57,7 +57,6 @@ const Medical_Report = [
       "Feeling great, no issues with blood pressure or sugar level today. Active and energetic.",
   },
 ];
-
 export const record_medical_status = catchAsync(async (req, res) => {
   const user = res.user;
 

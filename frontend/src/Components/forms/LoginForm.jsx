@@ -7,11 +7,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/authContext";
 import MySvg from "../../images/svg/login.svg";
 import Validation from "./LoginValidation";
+// import { data } from '../dashboard/common/moke.js'
 
 const LoginForm = () => {
-    const { login, currentUser } = useContext(AuthContext);
-    console.log(currentUser);
-
+    // const { login, currentUser } = useContext(AuthContext);
+    // console.log(currentUser);
+    const [value, setValue] = useState({})
 
     const [err, setErr] = useState(null);
     const navigate = useNavigate();
@@ -43,12 +44,20 @@ const LoginForm = () => {
         } else {
             setErrors({});
             try {
-                await login(values);
-                const res = JSON.parse(localStorage.getItem('currentUser'));
+                // data.map((data, index) => {
+                //     if (data.phone === values.phone && data.password === values.password) {
+                //         console.log(data, "my login data");
 
-                console.log(res.role, "response");
+                //     }
+                // })
+                // await login(values);
+                // const res = JSON.parse(localStorage.getItem('currentUser'));
 
-                res.role === 'PATIENTS' && navigate('/user/dashboard');
+                // console.log(res.role, "response");
+
+                // res.role === 'PATIENTS' && navigate('/user/dashboard');
+                // res.role === 'INSURANCE' && navigate('/insurance/dashboard');
+                // res.role === 'HOSPITAL' && navigate('/hospital/dashboard');
 
             } catch (err) {
                 setErr(err.response.data);
