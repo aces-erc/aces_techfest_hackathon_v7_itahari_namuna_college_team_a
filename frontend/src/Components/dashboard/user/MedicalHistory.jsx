@@ -3,7 +3,7 @@ import { useAuth } from '../../../Context/authContext';
 
 const MedicalHistory = () => {
     const { currentUser } = useAuth();
-    const [medicalHistory] = useState(currentUser.healthRecords || []);
+    const [medicalHistory] = useState(currentUser?.healthRecords || []);
     const [expandedIndex, setExpandedIndex] = useState(null);
 
     const toggleAccordion = (index) => {
@@ -11,7 +11,7 @@ const MedicalHistory = () => {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto p-4">
+        <div className="w-full max-w-4xl p-4">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Medical History</h1>
             {medicalHistory.length === 0 ? (
                 <p className="text-gray-600">No medical history available.</p>

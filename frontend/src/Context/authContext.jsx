@@ -27,12 +27,12 @@ export const AuthContextProvider = ({ children }) => {
   // Login function
   const login = async (credentials) => {
     try {
-      const response = await api.post("/auth/login", credentials);
+      const response = await api.post("/user/login", credentials);
       const { token } = response.data;
-      
+
       // Store token
       localStorage.setItem("token", token);
-      
+
       // Fetch user details using the token
       return await fetchUserDetails();
     } catch (error) {
@@ -43,12 +43,12 @@ export const AuthContextProvider = ({ children }) => {
   // Signup function
   const signup = async (userData) => {
     try {
-      const response = await api.post("/auth/signup", userData);
+      const response = await api.post("insurance/createuser", userData);
       const { token } = response.data;
-      
+
       // Store token
       localStorage.setItem("token", token);
-      
+
       // Fetch user details using the token
       return await fetchUserDetails();
     } catch (error) {
@@ -85,12 +85,12 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ 
-      currentUser, 
+    <AuthContext.Provider value={{
+      currentUser,
       login,
-      signup, 
+      signup,
       logout,
-      isAuthenticated: !!currentUser 
+      isAuthenticated: !!currentUser
     }}>
       {children}
     </AuthContext.Provider>

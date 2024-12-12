@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, Eye, EyeOff } from 'lucide-react';
+import { FaCalendarAlt } from "react-icons/fa";
+import { FaUserAlt } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { FaAddressBook } from "react-icons/fa6";
+import { FaPhoneSquareAlt } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 
 const UserCreation = () => {
   const [formData, setFormData] = useState({
@@ -34,7 +40,7 @@ const UserCreation = () => {
     try {
       // Get insurance_company_id from localStorage
       const insurance_company_id = localStorage.getItem('insurance_company_id');
-      
+
       const response = await fetch('YOUR_API_ENDPOINT', {
         method: 'POST',
         headers: {
@@ -52,7 +58,7 @@ const UserCreation = () => {
 
       // Handle success - you can add your own logic here
       alert('Form submitted successfully!');
-      
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -61,185 +67,159 @@ const UserCreation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          User Registration
-        </h2>
-      </div>
+    <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* First Name & Last Name */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  First Name
-                </label>
+      <div className="flex flex-col justify-end">
+        <h3 className="w-full text-4xl font-bold">Register</h3>
+        <form
+          action=""
+          method="post"
+          className="flex flex-col justify-center gap-4 mt-5 items-start "
+          onSubmit={handleSubmit}
+        >
+          <div className="flex flex-col gap-5 w-[80%]">
+            <div className="flex gap-2 w-full">
+              <div className="flex items-center w-full relative">
+                <FaUserAlt className="absolute" />
                 <input
                   type="text"
                   name="first_name"
-                  value={formData.first_name}
+                  id="fname"
+                  placeholder="Enter First Name"
+                  className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
                   onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Last Name
-                </label>
+              <div className="flex w-full relative">
+                <FaUserAlt className="absolute" />
                 <input
                   type="text"
                   name="last_name"
-                  value={formData.last_name}
+                  id="lname"
+                  placeholder="Enter last Name"
+                  className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
                   onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
             </div>
-
-            {/* Date of Birth */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Date of Birth
-              </label>
-              <div className="mt-1 relative">
-                <input
-                  type="date"
-                  name="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-                <Calendar className="absolute right-3 top-2 h-5 w-5 text-gray-400" />
-              </div>
-            </div>
-
-            {/* Gender */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Gender
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
+            <div className="flex items-center w-full relative">
+              <FaCalendarAlt className="absolute" />
+              <input
+                type="date"
+                name="dob"
+                id="dob"
+                placeholder="Enter DOB"
+                className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
                 onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
+              />
             </div>
+            <div className="flex gap-6 font-bold justify-start items-center w-full relative">
+              {/* <FaCalendarAlt className="absolute" /> */}
+              Gender:
+              <div className='flex gap-2'>
+                <input
+                  type="radio"
+                  name="gender"
+                  id="male"
+                  value='male'
+                  className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
+                  onChange={handleChange}
+                /> Male
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value='female'
+                  id="female"
+                  className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
+                  onChange={handleChange}
+                /> Female
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  id="other"
+                  value='other'
+                  className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
+                  onChange={handleChange}
+                /> Others
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
+              </div>
+            </div>
+            <div className="flex items-center w-full relative">
+              <FaAddressBook className="absolute" />
+              <input
+                type="text"
+                name="address"
+                id="address"
+                placeholder="Enter Full Address"
+                className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex items-center w-full relative">
+              <FaPhoneSquareAlt className="absolute" />
+              <input
+                type="number"
+                name="phone"
+                id="phone"
+                placeholder="Enter your phone "
+                className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex items-center w-full relative">
+              <MdEmail className="absolute" />
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                id="email"
+                placeholder="Enter Email Address"
+                className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
                 onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
-
-            {/* Address */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Address
-              </label>
-              <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-                rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Phone
-              </label>
+            <div className="flex items-center w-full relative">
+              <RiLockPasswordFill className="absolute" />
               <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
+                type="password"
+                name="password"
+                placeholder="Enter your Password"
+                className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
                 onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
-
-            {/* Balance */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Balance
-              </label>
+            <div className="flex items-center w-full relative">
+              <RiLockPasswordFill className="absolute" />
               <input
                 type="number"
                 name="balance"
-                value={formData.balance}
+                placeholder="Enter balance"
+                defaultValue={100000}
+                // value={100000}
+                className="outline-none font-semibold border-0 !border-b-2 w-[100%] border-black border-botton px-8"
                 onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
-
-            {error && (
-              <div className="text-red-600 text-sm">{error}</div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-            >
-              {loading ? 'Submitting...' : 'Submit'}
-            </button>
-          </form>
-        </div>
+          </div>
+          <div className="flex justify-center items-center">
+            <input
+              className="cursor-pointer"
+              type="checkbox"
+              name="check"
+              id=""
+            />
+            <span className="pl-2 font-semibold">
+              {" "}
+              I agree your terms and conditions
+            </span>
+          </div>
+          <button className="bg-primary p-2 px-4 font-bold rounded-sm hover:bg-[#79db7c] transition-colors duration-200 mt-4" type="submit">
+            Sign Up
+          </button>
+        </form>
       </div>
     </div>
   );

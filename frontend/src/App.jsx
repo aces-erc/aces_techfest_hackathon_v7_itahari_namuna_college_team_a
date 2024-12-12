@@ -9,6 +9,12 @@ import Dashboard from './Components/admin/Dashboard';
 import Chat from './Components/admin/Chat';
 import MedicalHistory from './Components/dashboard/user/MedicalHistory';
 import ConsultationHistory from './Components/dashboard/user/ConsultationHistory';
+import InsuranceMain from './Components/dashboard/insurance/InsuranceMain';
+import InsuranceDashboard from './Components/dashboard/insurance/InsuranceDashboard';
+import ManageHospital from './Components/dashboard/insurance/ManageHospital';
+import ManageUser from './Components/dashboard/insurance/ManageUser';
+import UserCreation from './Components/forms/UserCreation';
+import CreateHospitalForm from './Components/forms/CreateHospitalForm';
 
 const App = () => {
   const Layout = () => {
@@ -42,7 +48,7 @@ const App = () => {
       element: <HeroSection />
     },
     {
-      path: "/admin/dashboard",
+      path: "/user/dashboard",
       element: (
         <div>
           <AdminMain />
@@ -50,23 +56,53 @@ const App = () => {
       ),
       children: [
         {
-          path: "/admin/dashboard/",
+          path: "/user/dashboard/",
           element: <Dashboard />
         },
         {
-          path: "/admin/dashboard/chat/",
+          path: "/user/dashboard/chat/",
           element: <Chat />
         },
         {
-          path: "/admin/dashboard/medical-history/",
+          path: "/user/dashboard/medical-history/",
           element: <MedicalHistory />
         },
         {
-          path: "/admin/dashboard/Consultation-history/",
+          path: "/user/dashboard/Consultation-history/",
           element: <ConsultationHistory />
         },
       ]
-    }
+    },
+    {
+      path: "/insurance/dashboard",
+      element: (
+        <div>
+          <InsuranceMain />
+        </div>
+      ),
+      children: [
+        {
+          path: "/insurance/dashboard/",
+          element: <InsuranceDashboard />
+        },
+        {
+          path: "/insurance/dashboard/hospital",
+          element: <ManageHospital />
+        },
+        {
+          path: "/insurance/dashboard/user",
+          element: <ManageUser />
+        },
+        {
+          path: "/insurance/dashboard/addUser",
+          element: <UserCreation />
+        },
+        {
+          path: "/insurance/dashboard/addHospital",
+          element: <CreateHospitalForm />
+        },
+      ]
+    },
 
   ])
   return (
