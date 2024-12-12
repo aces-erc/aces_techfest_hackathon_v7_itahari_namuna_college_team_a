@@ -18,14 +18,15 @@ const InsuranceCompanyMiddleware = catchAsync(async (req, res, next) => {
     return res
       .status(401)
       .json({ success: false, message: "Unauthorized: No token provided." });
-  };
+  }
 
   const decoded_insurance_company = jwt.verify(cookies, process.env.JWT_SECRET);
 
+  const decoded = await prisma.iNSURANCE_COMPANY.findUnique({
+    where: { id: decoded_insurance_company.id },
+  });
 
-  const decoded = await prisma.iNSURANCE_COMPANY.findUnique({ where: { id: decoded_insurance_company.id } })
-
-  console.log(decoded)
+  console.log("decoded token", decoded);
 
   if (decoded.role !== "INSURANCE_COMPANY") {
     return res.status(403).json({
@@ -36,7 +37,6 @@ const InsuranceCompanyMiddleware = catchAsync(async (req, res, next) => {
 
   res.user = decoded;
   next();
-
 });
 
 export default InsuranceCompanyMiddleware;
