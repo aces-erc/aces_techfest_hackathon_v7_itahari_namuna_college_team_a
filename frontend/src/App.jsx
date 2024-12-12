@@ -15,6 +15,7 @@ import ManageHospital from './Components/dashboard/insurance/ManageHospital';
 import ManageUser from './Components/dashboard/insurance/ManageUser';
 import UserCreation from './Components/forms/UserCreation';
 import CreateHospitalForm from './Components/forms/CreateHospitalForm';
+import QrGenerator from './Components/dashboard/user/QrGenerator';
 
 const App = () => {
   const Layout = () => {
@@ -70,6 +71,10 @@ const App = () => {
         {
           path: "/user/dashboard/Consultation-history/",
           element: <ConsultationHistory />
+        },
+        {
+          path: "/user/dashboard/qrcode/",
+          element: <QrGenerator />
         },
       ]
     },

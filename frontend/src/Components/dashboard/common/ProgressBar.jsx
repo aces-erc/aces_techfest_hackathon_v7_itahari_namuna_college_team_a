@@ -14,34 +14,34 @@ const ProgressBar = ({
     className = ''
 }) => {
     const [progress, setProgress] = useState(0);
+    const [remaining, setRemaining] = useState(0);
 
     useEffect(() => {
-        // Calculate progress percentage based on type
         let total, achieved;
 
         if (type === 'amount') {
             total = end - start;
             achieved = current - start;
+            const percentage = (achieved / total) * 100;
+            setProgress(Math.min(Math.max(percentage, 0), 100));
+            setRemaining(total - achieved);
         } else {
-            // For date type, convert to timestamps
             const startTime = new Date(start).getTime();
             const endTime = new Date(end).getTime();
             const currentTime = new Date(current).getTime();
 
             total = endTime - startTime;
             achieved = currentTime - startTime;
+            const percentage = (achieved / total) * 100;
+            setProgress(Math.min(Math.max(percentage, 0), 100));
+            setRemaining(endTime - currentTime);
         }
-
-        const percentage = (achieved / total) * 100;
-        setProgress(Math.min(Math.max(percentage, 0), 100));
     }, [start, current, end, type]);
 
-    // Format values based on type
     const formatValue = (value) => {
         if (type === 'amount') {
             return `NPR ${Number(value).toLocaleString()}`;
         } else {
-            // Format date
             return new Date(value).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
@@ -50,7 +50,6 @@ const ProgressBar = ({
         }
     };
 
-    // Get appropriate icon and color based on progress
     const getProgressStatus = () => {
         if (progress >= 80) {
             return {
@@ -75,13 +74,11 @@ const ProgressBar = ({
     const status = getProgressStatus();
     const StatusIcon = status.icon;
 
-    // Calculate remaining value
     const calculateRemaining = () => {
         if (type === 'amount') {
-            return `${Math.round(100 - progress)}% remaining`;
+            return `${formatValue(remaining)} remaining`;
         } else {
-            const remainingTime = new Date(end) - new Date(current);
-            const days = Math.ceil(remainingTime / (1000 * 60 * 60 * 24));
+            const days = Math.ceil(remaining / (1000 * 60 * 60 * 24));
             return `${days} days remaining`;
         }
     };

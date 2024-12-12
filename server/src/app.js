@@ -22,7 +22,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-  }),
+  })
 );
 
 const node_server = createServer(app);
@@ -38,7 +38,9 @@ const io = new Server(node_server, {
 socketController(io);
 
 app.use("/user/", userRoutes);
+
 app.use("/user/", insuranceRoutes);
+
 app.use("/login", authRoutes);
 app.use("/hospital", hospitalRoutes);
 // app.use("/report")
