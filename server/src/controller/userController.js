@@ -38,7 +38,6 @@ const checkUser = async (phone) => {
   return prisma.user.findUnique({ where: { phone } });
 };
 
-// REGISTER USER BY INSURANCE COMPANY
 export const userController = {
   createUser: async (req, res) => {
     try {
@@ -46,7 +45,6 @@ export const userController = {
         first_name,
         last_name,
         dob,
-        role,
         gender,
         email,
         address,
@@ -62,13 +60,23 @@ export const userController = {
         !last_name ||
         !dob ||
         !password ||
-        // !role ||
         !gender ||
         !address ||
         !bloodGroup ||
         !insurance_company_id
       ) {
         return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const insuranceCompany = await prisma.iNSURANCE_COMPANY.findUnique({
+        where: { id: insurance_company_id },
+        select: {
+          company_name: true, // Fetch the company's name
+        },
+      });
+
+      if (!insuranceCompany) {
+        return res.status(404).json({ error: "Insurance company not found" });
       }
 
       const hashed_password = await bcrypt.hash(password, 12);
@@ -86,7 +94,6 @@ export const userController = {
           password: hashed_password,
           gender,
           email,
-          // role,
           address,
           phone,
           bloodGroup,
@@ -95,7 +102,12 @@ export const userController = {
         },
       });
 
-      res.status(201).json(newUser);
+      res.status(201).json({
+        ...newUser,
+        insuranceCompany: {
+          company_name: insuranceCompany.company_name,
+        },
+      });
     } catch (error) {
       console.error(error);
       res
