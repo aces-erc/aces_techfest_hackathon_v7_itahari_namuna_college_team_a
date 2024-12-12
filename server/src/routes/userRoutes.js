@@ -4,7 +4,6 @@ import authMiddleware from "../middleware/authmiddleware.js";
 import { record_medical_status } from "../controller/patientController.js";
 import HospitalReportController from "../controller/HospitalReportController.js";
 import { multer, storage } from "./../Helper/Multer.js";
-import { insuranceCompanyController } from "../controller/insuranceCompany.js";
 
 const router = express.Router();
 

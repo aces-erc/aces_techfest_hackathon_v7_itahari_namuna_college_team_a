@@ -38,7 +38,9 @@ const io = new Server(node_server, {
 socketController(io);
 
 app.use("/user/", userRoutes);
-app.use("/insurance/", insuranceRoutes);
+
+app.use("/user/", insuranceRoutes);
+
 app.use("/login", authRoutes);
 app.use("/hospital", hospitalRoutes);
 // app.use("/report")
