@@ -34,16 +34,16 @@ model User {
   password             String
   bloodGroup           String
   insurance_company_id Int
-  insurance_company    INSURANCE_COMPANY @relation(fields: [insurance_company_id], references: [id])
+  insurance_company    INSURANCE_COMPANY @relation("UserInsuranceCompany", fields: [insurance_company_id], references: [id])
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
-  healthRecords        HealthRecord[]    // Relation with HealthRecord
+  healthRecords        HealthRecord[]    @relation("UserHealthRecords")
 }
 
 model HealthRecord {
   id            Int      @id @default(autoincrement())
   user_id       Int
-  user          User     @relation(fields: [user_id], references: [id]) // Relation with User
+  user          User     @relation("UserHealthRecords", fields: [user_id], references: [id])
   date          DateTime @default(now())
   bloodPressure Json?
   sugarLevel    Int?
@@ -52,35 +52,36 @@ model HealthRecord {
   updatedAt     DateTime @updatedAt
 }
 
-model Hospital {
-  id                Int                    @id @default(autoincrement())
-  hospital_name     String
-  username          String                 @unique
-  password          String
-  hospital_address  String
-  insuranceCompanies INSURANCE_COMPANY[]   @relation("HospitalInsuranceCompanies")
-  doctors           Doctor[]               @relation("HospitalDoctors")
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
-}
-
 model Doctor {
   id          Int      @id @default(autoincrement())
   username    String   @unique
   phone       String   @unique
   password    String
   hospital_id Int
-  hospital    Hospital @relation(fields: [hospital_id], references: [id])
+  hospital    Hospital @relation("DoctorHospital", fields: [hospital_id], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Hospital {
+  id                   Int                @id @default(autoincrement())
+  hospital_name        String
+  username             String             @unique
+  password             String
+  hospital_address     String
+  doctors              Doctor[]           @relation("DoctorHospital")
+  insurance_company    INSURANCE_COMPANY? @relation("HospitalInsuranceCompanies", fields: [insurance_company_id], references: [id])
+  insurance_company_id Int?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
 }
 
 model INSURANCE_COMPANY {
   id           Int        @id @default(autoincrement())
   company_name String     @unique
   password     String
-  users        User[]     @relation("UserInsuranceCompany") // Relation with User
-  hospitals    Hospital[] @relation("HospitalInsuranceCompanies") // Relation with Hospital
+  users        User[]     @relation("UserInsuranceCompany")
+  hospitals    Hospital[] @relation("HospitalInsuranceCompanies")
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 }
