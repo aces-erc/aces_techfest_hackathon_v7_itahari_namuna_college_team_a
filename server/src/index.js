@@ -1,2 +1,2 @@
-import { startServer } from "./server.js";
-startServer();
+// import { startServer } from "./server.js";
+// startServer();
