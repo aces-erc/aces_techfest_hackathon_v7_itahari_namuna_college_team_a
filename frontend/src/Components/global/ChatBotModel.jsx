@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-
+import axios from 'axios';
 import { io } from "socket.io-client";
+// import { stat } from 'fs';
 
 const socket = io.connect("http://localhost:8000");
 
 
 const ChatBotModel = ({ isOpen, closeModal }) => {
+  const [data, setData] = useState(null);
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [count, setCount] = useState(0);
 
   // Sample messages for initial chat state
   const [messages, setMessages] = useState([
@@ -18,7 +21,16 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
     },
   ]);
 
+  useEffect(() => {
+    axios.get('http://localhost:8000/show-latest-report').then((res) => {
+      console.log(res);
 
+      setData(res);
+
+    }).catch((err) => {
+      console.error(err);
+    })
+  }, []);
 
   useEffect(() => {
 
@@ -35,6 +47,7 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
 
     });
 
+
     // Clean up the socket listener when the component is unmounted
     return () => {
       socket.off("response");
@@ -42,16 +55,32 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
   }, []);
 
   const handlePrompt = () => {
-    setMessages(prev => [
-      ...prev,
-      {
-        type: 'prompt',
-        text: prompt,
-      },
-    ]);
+
+    let prompt;
+    if (count === 0) {
+
+      setMessages(prev => [
+        ...prev,
+        {
+          type: 'prompt',
+          text: data + prompt,
+        },
+      ]);
+
+      setCount(prev => prev + 1);
+    } else {
+      setMessages(prev => [
+        ...prev,
+        {
+          type: 'prompt',
+          text: prompt,
+        },
+      ]);
+    }
 
     // Emit the prompt message to the server
     socket.emit("send_prompt", prompt);
+    setPrompt("");
   };
 
 
@@ -102,8 +131,9 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
             <textarea
               onChange={(el) => setPrompt(el.target.value)}
               className="w-full p-4 pr-12 rounded-lg resize-none focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 border border-neutral-700 text-white"
+              value={prompt}
               placeholder="Type your message..."
-              rows="2"
+              roqqws="2"
             />
             <button
               onClick={handlePrompt}
