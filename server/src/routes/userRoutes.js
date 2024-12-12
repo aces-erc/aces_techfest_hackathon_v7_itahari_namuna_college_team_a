@@ -35,4 +35,6 @@ router.delete(
 );
 router.get("/userprofile/:id", userController.userProfile);
 
+router.get("/show_latest_report", authMiddleware, userController.show_latest_report);
+
 export default router;
