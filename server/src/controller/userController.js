@@ -103,7 +103,7 @@ export const userController = {
 
   userProfile: async (req, res) => {
     try {
-      console.log(req.params.id)
+      console.log(req.params.id);
       const userId = req.params.id; // Assume user ID is passed as a URL parameter
 
       const user = await prisma.user.findUnique({
@@ -156,7 +156,36 @@ export const userController = {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    createRefreshToken(res, user);
+    const createRefreshToken = (res, userData) => {
+      const id = userData.id;
+      const token = jwtToken(id);
+      console.log(token);
+
+      res.cookie("jwt", token, {
+        expires: new Date(
+          Date.now() +
+            process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
+        ),
+        httpOnly: true,
+      });
+    };
+
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        gender: user.gender,
+        address: user.address,
+        dob: user.dob,
+        bloodGroup: user.bloodGroup,
+        balance: user.balance,
+        insurance_company_id: user.insurance_company_id,
+      },
+    });
   }),
 
   logoutUser: async (req, res) => {
@@ -165,4 +194,3 @@ export const userController = {
     res.json({ message: "Logged out successfully" });
   },
 };
-
