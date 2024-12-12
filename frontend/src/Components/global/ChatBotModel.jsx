@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-import axios from 'axios';
-import { io } from "socket.io-client";
-// import { stat } from 'fs';
+import { io } from 'socket.io-client';
 
-const socket = io.connect("http://localhost:8000");
-
+const socket = io.connect('http://localhost:8000');
 
 const ChatBotModel = ({ isOpen, closeModal }) => {
   const [data, setData] = useState(null);
@@ -17,66 +14,74 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
   const [messages, setMessages] = useState([
     {
       type: 'response',
-      text: "This AI dataset, developed by Itahari Namuna College Team A, offers personalized health insights, pain relief methods, medical treatments, and preventive measures.",
+      text: 'This AI dataset, developed by Itahari Namuna College Team A, offers personalized health insights, pain relief methods, medical treatments, and preventive measures.',
     },
   ]);
 
-  useEffect(async () => {
-    // await axios.get('http://localhost:8000/user/show_user_information').then((res) => {
-    //   console.log(res);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/user/show_all_user_information', {
+          method: 'GET',
+          credentials: 'include',
+        });
 
-    //   setData(res);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    // })
+        const data = await response.json(); // Parse JSON response
 
-    const response = await axios({
-      method: "GET",
-      url: "http://localhost:8000/user/show_user_information",
-    })
+        function convertDataToParagraphs(data) {
+          return data.map((entry, index) => {
+            return `
+              Date: ${new Date(entry.date).toLocaleDateString()}
+              Description: ${entry.description || 'No description available.'}
+              Blood Pressure: ${entry.bloodPressure || 'N/A'}
+              Sugar Level: ${entry.sugarLevel || 'N/A'}
+            `;
+          }).join('\n');
+        }
 
-    console.log(response);
+        const paragraph = convertDataToParagraphs(data.data.Tests_and_Reports);
+        setData(paragraph);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
-
-    socket.on("response", async data => {
-
-      console.log(data);
-      setMessages(prev => [
+    socket.on('response', (data) => {
+      setMessages((prev) => [
         ...prev,
         {
           type: 'response',
           text: data,
         },
       ]);
-
     });
-
 
     // Clean up the socket listener when the component is unmounted
     return () => {
-      socket.off("response");
+      socket.off('response');
     };
   }, []);
 
   const handlePrompt = () => {
-
-    let prompt;
-    
-    alert(count);
-
     if (count === 0) {
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           type: 'prompt',
           text: data + prompt,
         },
       ]);
-
-      setCount(prev => prev + 1);
+      setCount((prev) => prev + 1);
     } else {
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           type: 'prompt',
@@ -86,16 +91,20 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
     }
 
     // Emit the prompt message to the server
-    socket.emit("send_prompt", prompt);
-    setPrompt("");
+    socket.emit('send_prompt', prompt);
+    setPrompt('');
   };
 
-
   return (
-    <div className="flex items-center justify-center">
-      <div className="relative w-full flex flex-col h-full">
+    <div className="flex items-center justify-center w-full h-full bg-gray-100">
+      <div className="relative w-full  bg-white  rounded-lg shadow-lg overflow-hidden h-full">
+        {/* Header */}
+        <div className="bg-primary p-4 flex justify-between items-center text-white">
+          <h3 className="text-lg font-semibold ">AroGen AI</h3>
+        </div>
+
         {/* Messages */}
-        <div className="p-2 flex flex-col gap-2 overflow-y-hidden w-full h-[calc(100vh-7rem)]">
+        <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100vh-15rem)]">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -106,12 +115,10 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
                   <span className="text-white text-lg font-semibold">AI</span>
                 </div>
               )}
-              <div className="flex-1 max-w-[60%]">
+              <div className="flex-1 max-w-[80%]">
                 <div
                   style={{ width: 'fit-content' }}
-                  className={`rounded-lg p-4 ${message.type === 'prompt'
-                    ? 'bg-primary text-white ml-auto'
-                    : 'bg-gray-100 dark:bg-neutral-800'
+                  className={`rounded-lg p-4 ${message.type === 'prompt' ? 'bg-gray-400 text-white ml-auto' : 'bg-primary  '
                     }`}
                 >
                   <p
@@ -123,7 +130,7 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
                 </div>
               </div>
               {message.type === 'prompt' && (
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center">
                   <span className="text-white text-lg font-semibold">You</span>
                 </div>
               )}
@@ -131,29 +138,30 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
           ))}
         </div>
 
-
         {/* Input Area */}
-        <div className="dark:border-neutral-700 sticky bottom-0 left-0 w-full p-4">
-          <div className="relative flex items-center">
+        <div className=" bg-primary p-4 flex items-center sticky bottom-0 w-full">
+          <div className='flex items-center w-full bg-white overflow-clip rounded-xl'>
+
             <textarea
               onChange={(el) => setPrompt(el.target.value)}
-              className="w-full p-4 pr-12 rounded-lg resize-none focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 border border-neutral-700 text-white"
+              className="w-full outline-none border-transparent p-4 pr-16 rounded-lg resize-none text-black focus:ring-blue-500  border bg-white text-white"
               value={prompt}
               placeholder="Type your message..."
-              roqqws="2"
+              rows="2"
             />
             <button
               onClick={handlePrompt}
               disabled={!prompt.trim() || isLoading}
-              className="absolute right-2 bottom-2 p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-4 rounded-full m-2  h-full bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-6 h-6 animate-spin" />
               ) : (
-                <Send className="w-5 h-5" />
+                <Send className="w-6 h-6" />
               )}
             </button>
           </div>
+
         </div>
       </div>
     </div>

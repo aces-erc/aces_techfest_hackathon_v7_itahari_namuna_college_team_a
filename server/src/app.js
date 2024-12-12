@@ -20,10 +20,15 @@ app.use(cookieParser());
 console.log(process.env.FRONTEND_ORIGIN);
 
 // CORS for HTTP routes (Express routes)
-app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN,  // e.g., "http://localhost:5173"
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN, // Ensure this matches the frontend's URL
+    credentials: true, // Allow cookies and headers to be shared
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Headers allowed in requests
+  })
+);
+
 
 // Create HTTP server and pass it to Socket.IO
 const node_server = createServer(app);
@@ -31,10 +36,10 @@ const node_server = createServer(app);
 // Socket.IO CORS configuration
 const io = new Server(node_server, {
   cors: {
-    origin: process.env.FRONTEND_ORIGIN,  // Ensure this matches your frontend's URL
+    origin: process.env.FRONTEND_ORIGIN, // Frontend URL
     methods: ["GET", "POST"],
-    credentials: true,  // Allow credentials such as cookies or authorization headers
-  }
+    credentials: true,
+  },
 });
 
 // Initialize Socket.IO controller
