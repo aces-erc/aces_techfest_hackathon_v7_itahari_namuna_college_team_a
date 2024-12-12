@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import HeroSection from './pages/HeroSection';
 import AdminMain from './Components/admin/AdminMain'
 import Dashboard from './Components/admin/Dashboard';
+import Chat from './Components/admin/Chat';
 
 const App = () => {
   const Layout = () => {
@@ -49,6 +50,10 @@ const App = () => {
         {
           path: "/admin/dashboard/",
           element: <Dashboard />
+        },
+        {
+          path: "/admin/dashboard/chat/",
+          element: <Chat />
         },
       ]
     }
