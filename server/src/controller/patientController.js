@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import catchAsync from "../utils/catchAsync.js";
 import statusFunc from "../utils/statusFunc.js";
 
+
 const prisma = new PrismaClient();
 
 /* 
@@ -60,9 +61,7 @@ const prisma = new PrismaClient();
     */
 
 export const record_medical_status = catchAsync(async (req, res) => {
-
     const user = res.user;
-    console.log(user);
 
     if (!user || !user.id) {
         return res.status(401).json({
@@ -97,4 +96,8 @@ export const record_medical_status = catchAsync(async (req, res) => {
         message: "Medical record created successfully.",
         data: medical_information,
     });
+});
+
+export const hospital_report = catchAsync(async(req, res) => {
+
 });
