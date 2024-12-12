@@ -100,5 +100,6 @@ export const loginController = async (req, res) => {
 };
 
 export const logoutController = async (_req, res) => {
+
   return statusFunc(res, 200, "Logged out successfully.");
 };

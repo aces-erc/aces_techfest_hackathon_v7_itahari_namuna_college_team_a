@@ -11,6 +11,7 @@ CREATE TABLE `User` (
     `phone` VARCHAR(191) NULL,
     `balance` INTEGER NOT NULL,
     `password` VARCHAR(191) NOT NULL,
+    `bloodGroup` VARCHAR(191) NOT NULL,
     `insurance_company_id` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -24,25 +25,12 @@ CREATE TABLE `HealthRecord` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `bloodPressure` VARCHAR(191) NULL,
-    `sugarLevel` JSON NOT NULL,
+    `bloodPressure` JSON NULL,
+    `sugarLevel` INTEGER NULL,
     `description` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Hospital` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `hospital_name` VARCHAR(191) NOT NULL,
-    `username` VARCHAR(191) NOT NULL,
-    `password` VARCHAR(191) NOT NULL,
-    `hospital_address` VARCHAR(191) NOT NULL,
-    `role` ENUM('HOSPITAL', 'PATIENTS', 'DOCTOR', 'INSURANCE_COMPANY') NOT NULL DEFAULT 'HOSPITAL',
-
-    UNIQUE INDEX `Hospital_username_key`(`username`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -62,23 +50,30 @@ CREATE TABLE `Doctor` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `INSURANCE_COMPANY` (
+CREATE TABLE `Hospital` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `company_name` VARCHAR(191) NOT NULL,
+    `hospital_name` VARCHAR(191) NOT NULL,
+    `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `role` ENUM('HOSPITAL', 'PATIENTS', 'DOCTOR', 'INSURANCE_COMPANY') NOT NULL DEFAULT 'INSURANCE_COMPANY',
+    `hospital_address` VARCHAR(191) NOT NULL,
+    `insurance_company_id` INTEGER NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `INSURANCE_COMPANY_company_name_key`(`company_name`),
+    UNIQUE INDEX `Hospital_username_key`(`username`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_HospitalInsuranceCompanies` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
+CREATE TABLE `INSURANCE_COMPANY` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `company_name` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `_HospitalInsuranceCompanies_AB_unique`(`A`, `B`),
-    INDEX `_HospitalInsuranceCompanies_B_index`(`B`)
+    UNIQUE INDEX `INSURANCE_COMPANY_company_name_key`(`company_name`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -91,7 +86,4 @@ ALTER TABLE `HealthRecord` ADD CONSTRAINT `HealthRecord_user_id_fkey` FOREIGN KE
 ALTER TABLE `Doctor` ADD CONSTRAINT `Doctor_hospital_id_fkey` FOREIGN KEY (`hospital_id`) REFERENCES `Hospital`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_HospitalInsuranceCompanies` ADD CONSTRAINT `_HospitalInsuranceCompanies_A_fkey` FOREIGN KEY (`A`) REFERENCES `Hospital`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_HospitalInsuranceCompanies` ADD CONSTRAINT `_HospitalInsuranceCompanies_B_fkey` FOREIGN KEY (`B`) REFERENCES `INSURANCE_COMPANY`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Hospital` ADD CONSTRAINT `Hospital_insurance_company_id_fkey` FOREIGN KEY (`insurance_company_id`) REFERENCES `INSURANCE_COMPANY`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
