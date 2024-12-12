@@ -158,9 +158,14 @@ export const userController = {
       where: {
         phone,
       },
+      include: {
+        insurance_company: {
+          select: {
+            company_name: true, // Fetch the company name
+          },
+        },
+      },
     });
-
-    console.log(user);
 
     if (!user) {
       return res.status(401).json({ error: "User not found" });
@@ -172,19 +177,15 @@ export const userController = {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    const createRefreshToken = (res, userData) => {
-      const id = userData.id;
-      const token = jwtToken(id);
-      console.log(token);
+    const token = jwtToken(user.id);
 
-      res.cookie("jwt", token, {
-        expires: new Date(
-          Date.now() +
-            process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
-        ),
-        httpOnly: true,
-      });
-    };
+    res.cookie("jwt", token, {
+      expires: new Date(
+        Date.now() +
+          process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
+      ),
+      httpOnly: true,
+    });
 
     res.status(200).json({
       message: "Login successful",
@@ -197,10 +198,14 @@ export const userController = {
         gender: user.gender,
         address: user.address,
         dob: user.dob,
+        role: user.role,
         bloodGroup: user.bloodGroup,
         balance: user.balance,
-        insurance_company_id: user.insurance_company_id,
+        insurance_company: {
+          company_name: user.insurance_company?.company_name || null,
+        },
       },
+      token, // Return the token if needed on the frontend
     });
   }),
 
