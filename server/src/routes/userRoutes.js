@@ -37,4 +37,5 @@ router.get("/userprofile/:id", userController.userProfile);
 
 router.get("/show_latest_report", authMiddleware, userController.show_latest_report);
 
+router.get("/show_user_information", authMiddleware, userController.get_all_user_uploaded_information);
 export default router;

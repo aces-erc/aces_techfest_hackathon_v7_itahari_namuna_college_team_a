@@ -272,4 +272,34 @@ export const userController = {
       data: latestReports
     });
   }),
+
+  get_all_user_uploaded_information: catchAsync(async (req, res) => {
+    const userId = res.user.id;
+
+    const latestReports = await prisma.healthRecord.findMany({
+      where: {
+        user_id: userId
+      },
+      orderBy: {
+        date: 'desc'
+      },
+      take: 8
+    });
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    const hospital_report = user.hostpital_Report;
+
+    const Records = {
+      Tests_and_Reports: latestReports,
+      Image_Reports: hospital_report,
+    }
+
+    res.status(200).json({
+      message:"success",
+      data: Records
+    })
+  }),
 };

@@ -17,7 +17,7 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
   const [messages, setMessages] = useState([
     {
       type: 'response',
-      text: "Hello! I'm your AI assistant. I can help you with various tasks like answering questions, writing code, or analyzing data. How can I help you today?",
+      text: "This AI dataset, developed by Itahari Namuna College Team A, offers personalized health insights, pain relief methods, medical treatments, and preventive measures.",
     },
   ]);
 
