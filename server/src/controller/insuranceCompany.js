@@ -9,61 +9,73 @@ const prisma = new PrismaClient();
 const createRefreshToken = (res, userData) => {
   const id = userData.id;
   const token = jwtToken(id);
-  console.log(token)
+  console.log(token);
 
   res.cookie("Insurance_Company", token, {
     expires: new Date(
-      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000
+      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
-  })
+  });
 
-  statusFunc(res, 201, token)
-}
+  statusFunc(res, 201, token);
+};
 
 const jwtToken = (id) => {
-  return jwt.sign({
-    id
-  }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
-  })
-}
+  return jwt.sign(
+    {
+      id,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    },
+  );
+};
 
 const checkUser = async (phone) => {
   return prisma.user.findUnique({ where: { phone } });
 };
 
 export const insuranceCompanyController = {
-  createInsuranceCompany: catchAsync(async (req, res) => {
+  createInsuranceCompany: async (req, res) => {
     const { company_name, password } = req.body;
-    console.log(company_name, password);
-
 
     if (!company_name || !password) {
-      return res.status(400).json({ error: "Company name and Password is required" });
+      return res
+        .status(400)
+        .json({ error: "Company name and Password is required" });
     }
 
-    const hashed_password = await bcrypt.hash(password, 12);
+    try {
+      const hashed_password = await bcrypt.hash(password, 12);
 
-    const newInsuranceCompany = await prisma.iNSURANCE_COMPANY.create({
-      data: {
-        company_name,
-        password: hashed_password
-      },
-    });
+      const newInsuranceCompany = await prisma.iNSURANCE_COMPANY.create({
+        data: {
+          company_name,
+          password: hashed_password,
+        },
+      });
 
-    console.log(newInsuranceCompany);
+      console.log(newInsuranceCompany);
 
-    // res.status(201).json(newInsuranceCompany);
-    createRefreshToken(res, newInsuranceCompany);
-
-  }),
+      // res.status(201).json(newInsuranceCompany);
+      createRefreshToken(res, newInsuranceCompany);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        error: "An error occurred while creating the insurance company",
+      });
+    }
+  },
 
   loginInsuranceCompany: async (req, res) => {
     const { company_name, password } = req.body;
 
     if (!company_name || !password) {
-      return res.status(400).json({ error: "Company name and Password is required" });
+      return res
+        .status(400)
+        .json({ error: "Company name and Password is required" });
     }
 
     try {
@@ -80,7 +92,10 @@ export const insuranceCompanyController = {
       }
 
       // Compare the hashed passwords
-      const passwordMatch = await bcrypt.compare(password, insuranceCompany.password);
+      const passwordMatch = await bcrypt.compare(
+        password,
+        insuranceCompany.password,
+      );
 
       if (!passwordMatch) {
         return res.status(401).json({ error: "Invalid credentials" });
@@ -97,52 +112,37 @@ export const insuranceCompanyController = {
   },
 
   createHospital: async (req, res) => {
-    const insurance_id = res.user.id; // Gets the Insurance company ID from the authenticated user
-
+    const insurance_id = req.user.id; // Gets the Insurance company ID from the authenticated user
     const { hospital_name, password, hospital_address } = req.body;
 
-    // Validate required fields
     if (!hospital_name || !password || !hospital_address) {
-      return res.status(400).json({ error: "Hospital name, password, and address are required" });
+      return res
+        .status(400)
+        .json({ error: "Hospital name, password, and address are required" });
     }
 
-    // Generate a unique username based on the hospital name
-    const username = hospital_name.replace(/\s+/g, "_").toLowerCase();
+    const username = hospital_name.replaceAll(" ", "_");
 
     try {
-      // Hash the password
       const hashed_password = await bcrypt.hash(password, 12);
 
-      // Create the new hospital entry in the database
       const newHospital = await prisma.hospital.create({
         data: {
           hospital_name,
           username,
           password: hashed_password,
           hospital_address,
-          insurance_company: {
-            connect: { id: insurance_id }, // Connect the hospital to the existing insurance company by ID
+          insurance_companies: {
+            connect: [{ id: insurance_id }], // Connect the hospital to an existing insurance company by ID
           },
         },
       });
 
-      console.log("New hospital created:", newHospital);
+      console.log(newHospital);
 
-      // Respond with the created hospital data (excluding sensitive info like password)
-      res.status(201).json({
-        message: "Hospital created successfully.",
-        hospital: {
-          id: newHospital.id,
-          hospital_name: newHospital.hospital_name,
-          username: newHospital.username,
-          hospital_address: newHospital.hospital_address,
-          insurance_company_id: newHospital.insurance_company_id,
-          createdAt: newHospital.createdAt,
-          updatedAt: newHospital.updatedAt,
-        },
-      });
+      res.status(201).json(newHospital);
     } catch (error) {
-      console.error("Error creating hospital:", error);
+      console.error(error);
       res.status(500).json({
         error: "An error occurred while creating the hospital",
       });
@@ -242,7 +242,6 @@ export const insuranceCompanyController = {
       });
     }
   },
-
 
   getInsuranceCompanies: async (req, res) => {
     try {
