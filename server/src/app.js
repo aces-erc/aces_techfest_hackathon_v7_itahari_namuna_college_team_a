@@ -42,6 +42,7 @@ app.use("/user/", userRoutes);
 app.use("/insurance/", insuranceRoutes);  
 app.use("/login", authRoutes);
 app.use("/hospital", hospitalRoutes);
+// app.use("/report")
 
 
 app.get("/", (req, res) => {

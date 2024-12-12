@@ -15,32 +15,32 @@ router.post("/login", insuranceCompanyController.loginInsuranceCompany);
 // yo route le hospital create garney [but needs to be logged-in first as InsuranceCompany]
 router.post(
   "/create_hospital",
-  authMiddleware,
+  InsuranceCompanyMiddleware,
   insuranceCompanyController.createHospital,
 );
 
 // this routes get all the hospital
 router.get(
   "/all_hospital",
-  authMiddleware,
+  InsuranceCompanyMiddleware,
   insuranceCompanyController.getAllHospital,
 );
 
 // Update a hospital by ID
 router.put(
   "/update_hospital/:id",
-  authMiddleware,
+  InsuranceCompanyMiddleware,
   insuranceCompanyController.updateHospital,
 );
 
 // Delete a hospital by ID
 router.delete(
   "/delete_hospital/:id",
-  authMiddleware,
+  InsuranceCompanyMiddleware,
   insuranceCompanyController.DeleteHospital,
 );
 
-router.get("/getall", insuranceCompanyController.getInsuranceCompanies);
+router.get("/getall", InsuranceCompanyMiddleware, insuranceCompanyController.getInsuranceCompanies);
 router.get(
   "/getinsurancecompany/:id",
   insuranceCompanyController.getInsuranceCompanyById,

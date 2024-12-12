@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import { io } from "socket.io-client";
 import { Send, Loader2 } from 'lucide-react';
+
+const socket = io.connect(import.meta.env.VITE_SERVER_ADDRESS, {
+  withCredentials: true,
+});
 
 const ChatBotModel = ({ isOpen, closeModal }) => {
   const [socket, setSocket] = useState(null);
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [promptResponse, setPromptResponse] = useState(null);
 
   // Initialize with sample messages
   const [messages, setMessages] = useState([
@@ -31,42 +36,21 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
     }
   ]);
 
-  useEffect(() => {
-    if (isOpen) {
-      const newSocket = io('https://6q8ckzgr-9000.inc1.devtunnels.ms/');
-      setSocket(newSocket);
-
-      newSocket.on('response', (data) => {
-        setMessages((prev) => [...prev, { type: 'response', text: data }]);
-        setIsLoading(false);
-      });
-
-      return () => {
-        newSocket.disconnect();
-        setSocket(null);
-      };
-    }
-  }, [isOpen]);
-
   const handleSend = () => {
-    if (prompt.trim() && socket) {
-      socket.emit('send_prompt', prompt);
-      setMessages((prev) => [...prev, { type: 'prompt', text: prompt }]);
-      setPrompt('');
-      setIsLoading(true);
-    }
-  };
+    socket.emit("prompt", prompt);
+  }
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+  useEffect(() => {
 
-  if (!isOpen) return null;
+    socket.on("response", (data) => {
+      setPromptResponse(prev => prev + prev);
+    });
+
+  }, [socket]);
+
 
   return (
+
     <div className=" flex items-center justify-center ">
       <div className="relative w-full flex flex-col h-full ">
         {/* Messages */}

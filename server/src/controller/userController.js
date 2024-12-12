@@ -103,6 +103,7 @@ export const userController = {
 
   userProfile: async (req, res) => {
     try {
+      console.log(req.params.id)
       const userId = req.params.id; // Assume user ID is passed as a URL parameter
 
       const user = await prisma.user.findUnique({
