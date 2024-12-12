@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import { io } from "socket.io-client";
 import { Send, Loader2 } from 'lucide-react';
+
+const socket = io.connect(import.meta.env.VITE_SERVER_ADDRESS, {
+  withCredentials: true,
+});
 
 const ChatBotModel = ({ isOpen, closeModal }) => {
   const [socket, setSocket] = useState(null);
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [promptResponse, setPromptResponse] = useState(null);
 
   // Initialize with sample messages
   const [messages, setMessages] = useState([
@@ -31,44 +36,22 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
     }
   ]);
 
-  useEffect(() => {
-    if (isOpen) {
-      const newSocket = io('https://6q8ckzgr-9000.inc1.devtunnels.ms/');
-      setSocket(newSocket);
-
-      newSocket.on('response', (data) => {
-        setMessages((prev) => [...prev, { type: 'response', text: data }]);
-        setIsLoading(false);
-      });
-
-      return () => {
-        newSocket.disconnect();
-        setSocket(null);
-      };
-    }
-  }, [isOpen]);
-
   const handleSend = () => {
-    if (prompt.trim() && socket) {
-      socket.emit('send_prompt', prompt);
-      setMessages((prev) => [...prev, { type: 'prompt', text: prompt }]);
-      setPrompt('');
-      setIsLoading(true);
-    }
-  };
+    socket.emit("prompt", prompt);
+  }
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+  useEffect(() => {
 
-  if (!isOpen) return null;
+    socket.on("response", (data) => {
+      setPromptResponse(prev => prev + prev);
+    });
+
+  }, [socket]);
+
 
   return (
     <div className=" inset-0 flex mb-4 items-center justify-center ">
-      <div className="relative w-full bg-white shadow-xl flex flex-col h-full ">
+      <div className="rounded-xl relative w-full bg-white shadow-xl flex flex-col h-full overflow">
         {/* Header */}
         <div className="p-4 border-b fixed top-12 bg-white w-full">
           <div className="flex items-center justify-between">
@@ -77,7 +60,7 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 px-20 space-y-4 mb-[8rem] mt-[4rem]" >
+        <div className="flex-1 overflow-y-auto p-4 px-8 space-y-4 mb-[8rem] mt-[4rem]" >
           {/* Chat Messages */}
           {messages.map((message, index) => (
             <div key={index} className={`flex gap-3 ${message.type === 'prompt' ? 'justify-end' : ''}`}>
