@@ -5,6 +5,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { PiProjectorScreenChart } from "react-icons/pi";
+import { FaQrcode } from "react-icons/fa6";
 import { FaLaptopMedical } from "react-icons/fa";
 import { MdManageHistory } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -113,9 +114,7 @@ const AdminSidebar = () => {
                     <MdOutlineManageAccounts className='text-lg' />
                     Account
 
-                    {/* <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6" /></svg>
 
-                    <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg> */}
                   </button>
 
                   {/* <div id="account-accordion-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden" role="region" aria-labelledby="account-accordion">
@@ -138,25 +137,27 @@ const AdminSidebar = () => {
                     </ul>
                   </div> */}
                 </li>
-
                 <li class="hs-accordion" id="projects-accordion">
-                  <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
-                    <PiProjectorScreenChart className='text-lg' />
-                    Projects
+                  <Link to='/admin/dashboard/medical-history/'>
+                    <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
+                      <FaLaptopMedical className='text-lg' />
+                      Medical history
 
-                  </button>
+                    </button>
+                  </Link>
+                </li>
+                <li class="hs-accordion" id="projects-accordion">
+                  <Link to='/admin/dashboard/Consultation-history/'>
+                    <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
+                      <MdManageHistory className='text-lg' />
+                      Consultation history
+                    </button>
+                  </Link>
                 </li>
                 <li class="hs-accordion" id="projects-accordion">
                   <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
-                    <FaLaptopMedical className='text-lg' />
-                    Medical history
-
-                  </button>
-                </li>
-                <li class="hs-accordion" id="projects-accordion">
-                  <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10" aria-expanded="true" aria-controls="projects-accordion-child">
-                    <MdManageHistory className='text-lg' />
-                    Consultation history
+                    <FaQrcode className='text-lg' />
+                    Share QR
 
                   </button>
                 </li>
