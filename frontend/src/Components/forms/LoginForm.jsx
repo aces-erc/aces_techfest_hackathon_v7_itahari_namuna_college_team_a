@@ -42,6 +42,8 @@ const LoginForm = () => {
             setErrors({});
             try {
                 await login(values);
+                console.log(login(values), 45);
+
 
                 navigate('/');
             } catch (err) {

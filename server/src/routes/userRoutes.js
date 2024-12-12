@@ -26,12 +26,12 @@ router.post(
     { name: "xray", maxCount: 5 },
     { name: "report", maxCount: 5 },
   ]),
-  HospitalReportController.addReport,
+  HospitalReportController.addReport
 );
 router.delete(
   "/delete_medical_report",
   authMiddleware,
-  HospitalReportController.deleteReport,
+  HospitalReportController.deleteReport
 );
 router.get("/userprofile", userController.userProfile);
 
