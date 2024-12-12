@@ -49,6 +49,8 @@ const LoginForm = () => {
                 console.log(res.role, "response");
 
                 res.role === 'PATIENTS' && navigate('/user/dashboard');
+                res.role === 'INSURANCE' && navigate('/insurance/dashboard');
+                res.role === 'HOSPITAL' && navigate('/hospital/dashboard');
 
             } catch (err) {
                 setErr(err.response.data);
