@@ -33,34 +33,34 @@ model User {
   balance              Int
   password             String
   insurance_company_id Int
-  insurance_company    INSURANCE_COMPANY @relation("UserInsuranceCompany", fields: [insurance_company_id], references: [id])
+  insurance_company    INSURANCE_COMPANY @relation(fields: [insurance_company_id], references: [id])
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
-  healthRecords        HealthRecord[]
+  healthRecords        HealthRecord[]    // Relation with HealthRecord
 }
 
 model HealthRecord {
   id            Int      @id @default(autoincrement())
   user_id       Int
-  user          User     @relation(fields: [user_id], references: [id])
+  user          User     @relation(fields: [user_id], references: [id]) // Relation with User
   date          DateTime @default(now())
-  bloodPressure String?
-  sugarLevel    Json
+  bloodPressure Json?
+  sugarLevel    Int?
   description   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
 
 model Hospital {
-  id                     Int                    @id @default(autoincrement())
-  hospital_name          String
-  username               String                 @unique
-  password               String
-  hospital_address       String
-  role                 Role              @default(HOSPITAL)
-
-  insurance_companies    INSURANCE_COMPANY[]    @relation("HospitalInsuranceCompanies")
-  doctors                Doctor[]               @relation("HospitalDoctors")
+  id                Int                    @id @default(autoincrement())
+  hospital_name     String
+  username          String                 @unique
+  password          String
+  hospital_address  String
+  insuranceCompanies INSURANCE_COMPANY[]   @relation("HospitalInsuranceCompanies")
+  doctors           Doctor[]               @relation("HospitalDoctors")
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
 }
 
 model Doctor {
@@ -69,7 +69,7 @@ model Doctor {
   phone       String   @unique
   password    String
   hospital_id Int
-  hospital    Hospital @relation("HospitalDoctors", fields: [hospital_id], references: [id])
+  hospital    Hospital @relation(fields: [hospital_id], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -78,7 +78,8 @@ model INSURANCE_COMPANY {
   id           Int        @id @default(autoincrement())
   company_name String     @unique
   password     String
-  role         Role       @default(INSURANCE_COMPANY)
-  users        User[]     @relation("UserInsuranceCompany")
-  hospitals    Hospital[] @relation("HospitalInsuranceCompanies")
+  users        User[]     @relation("UserInsuranceCompany") // Relation with User
+  hospitals    Hospital[] @relation("HospitalInsuranceCompanies") // Relation with Hospital
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
