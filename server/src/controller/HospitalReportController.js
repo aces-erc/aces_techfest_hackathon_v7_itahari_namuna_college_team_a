@@ -1,6 +1,8 @@
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "@prisma/client";
 import path from "path";
 import fs from "fs";
+
+const prisma = new PrismaClient();
 const HospitalReportController = {
   /**
    * Add a new hospital report for a user
@@ -9,17 +11,15 @@ const HospitalReportController = {
    */
   addReport: async (req, res) => {
     try {
-      // const { userId } = req.body;
-      const userId = res.user.id;
+      const userId = parseInt(res.user.id);
 
       // Ensure the user ID is provided
       if (!userId) {
         return res.status(400).json({ error: "User ID is required." });
       }
 
-
-      // Ensure a file is uploaded
-      if (!req.files) {
+      // Ensure files are uploaded
+      if (!req.files || (!req.files.xray && !req.files.report)) {
         return res.status(400).json({ error: "File upload is required." });
       }
 
@@ -32,16 +32,34 @@ const HospitalReportController = {
         return res.status(404).json({ error: "User not found." });
       }
 
-      // Add the new report to the existing JSON array or initialize if null
+      // Initialize reports array
       const reports = user.hostpital_Report || [];
-      const newReport = {
-        id: Date.now(), // Generate a unique ID for the report
-        fileName: req.file.filename,
-        url: `/uploads/${req.file.filename}`,
-        uploadedAt: new Date(),
-      };
 
-      reports.push(newReport);
+      // Process uploaded X-ray files
+      if (req.files.xray) {
+        for (const file of req.files.xray) {
+          reports.push({
+            id: Date.now(), // Generate unique ID
+            fileName: file.filename,
+            url: `/uploads/${file.filename}`,
+            uploadedAt: new Date(),
+            type: "xray",
+          });
+        }
+      }
+
+      // Process uploaded report files
+      if (req.files.report) {
+        for (const file of req.files.report) {
+          reports.push({
+            id: Date.now(), // Generate unique ID
+            fileName: file.filename,
+            url: `/uploads/${file.filename}`,
+            uploadedAt: new Date(),
+            type: "report",
+          });
+        }
+      }
 
       // Update the user's hospital reports
       await prisma.user.update({
@@ -51,7 +69,7 @@ const HospitalReportController = {
 
       res.status(201).json({
         message: "Hospital report added successfully.",
-        report: newReport,
+        reports,
       });
     } catch (error) {
       console.error(error);
@@ -123,4 +141,3 @@ const HospitalReportController = {
 };
 
 export default HospitalReportController;
-
