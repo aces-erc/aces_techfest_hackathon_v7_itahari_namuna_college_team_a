@@ -183,7 +183,7 @@ export const userController = {
     res.cookie("jwt", token, {
       expires: new Date(
         Date.now() +
-          process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
+        process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
       ),
       httpOnly: true,
     });
@@ -250,4 +250,26 @@ export const userController = {
         .json({ error: "An error occurred while retrieving users" });
     }
   },
+
+
+  // give all report 
+  show_latest_report: catchAsync(async (req, res) => {
+    const user = res.user.id;
+
+    const latestReports = await prisma.healthRecord.findMany({
+      where: {
+        user_id: user
+      },
+      orderBy: {
+        date: 'desc'
+      },
+      take: 5
+    });
+
+    // Respond with the data
+    return res.status(200).json({
+      success: true,
+      data: latestReports
+    });
+  }),
 };

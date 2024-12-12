@@ -56,7 +56,6 @@ const Medical_Report = [
 ]
 
 
-
 export const record_medical_status = catchAsync(async (req, res) => {
   const user = res.user;
 
