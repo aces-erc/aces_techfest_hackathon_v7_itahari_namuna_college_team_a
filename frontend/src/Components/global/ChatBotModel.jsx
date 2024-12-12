@@ -67,37 +67,29 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center ">
-      <div className="relative w-full bg-white shadow-xl flex flex-col h-full dark:bg-neutral-900">
+    <div className=" inset-0 flex mb-4 items-center justify-center ">
+      <div className="relative w-full bg-white shadow-xl flex flex-col h-full ">
         {/* Header */}
-        <div className="p-4 border-b dark:border-neutral-700">
+        <div className="p-4 border-b fixed top-12 bg-white w-full">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">AroGen</h1>
-            <button
-              onClick={closeModal}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <h1 className="text-2xl font-bold text-gray-800 ">AroGen AI</h1>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 px-20 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 px-20 space-y-4 mb-[8rem] mt-[4rem]" >
           {/* Chat Messages */}
           {messages.map((message, index) => (
             <div key={index} className={`flex gap-3 ${message.type === 'prompt' ? 'justify-end' : ''}`}>
               {message.type === 'response' && (
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center">
                   <span className="text-white text-lg font-semibold">AI</span>
                 </div>
               )}
               <div className="flex-1 max-w-[60%]">
                 <div className={`rounded-lg p-4 ${message.type === 'prompt'
-                    ? 'bg-blue-600 text-white ml-[50%]'
-                    : 'bg-gray-100 dark:bg-neutral-800'
+                  ? 'bg-primary text-white ml-[50%]'
+                  : 'bg-gray-100 dark:bg-neutral-800'
                   }`}>
                   <p className={`whitespace-pre-wrap ${message.type === 'response' ? 'text-gray-800 dark:text-white' : ''}`}>
                     {message.text}
@@ -120,7 +112,7 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
               </div>
               <div className="flex-1">
                 <div className="bg-gray-100 rounded-lg p-4 dark:bg-neutral-800">
-                  <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
                 </div>
               </div>
             </div>
@@ -128,13 +120,12 @@ const ChatBotModel = ({ isOpen, closeModal }) => {
         </div>
 
         {/* Input Area */}
-        <div className="border-t p-4 dark:border-neutral-700">
+        <div className="border-t p-4 dark:border-neutral-700 fixed bottom-[-1.35rem] left-0 w-[81.6%] ml-[18.5%]">
           <div className="relative">
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="w-full p-4 pr-12 rounded-lg resize-none border border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              className="w-full p-4 pr-12 rounded-lg resize-none border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:bg-neutral-800 border-neutral-700 text-white"
               placeholder="Type your message..."
               rows="3"
             />

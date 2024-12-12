@@ -1,8 +1,11 @@
 import React from 'react'
+import ChatBotModel from '../global/ChatBotModel'
 
 const Chat = () => {
     return (
-        <div>Chat</div>
+        <div className='w-full'>
+            <ChatBotModel isOpen={true} closeModal={() => { }} />
+        </div>
     )
 }
 
