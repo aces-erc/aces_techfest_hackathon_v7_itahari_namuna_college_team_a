@@ -10,7 +10,7 @@ import Validation from "./LoginValidation";
 // import { data } from '../dashboard/common/moke.js'
 
 const LoginForm = () => {
-    // const { login, currentUser } = useContext(AuthContext);
+    const { login, currentUser } = useContext(AuthContext);
     // console.log(currentUser);
     const [value, setValue] = useState({})
 
@@ -50,14 +50,14 @@ const LoginForm = () => {
 
                 //     }
                 // })
-                // await login(values);
-                // const res = JSON.parse(localStorage.getItem('currentUser'));
+                await login(values);
+                const res = JSON.parse(localStorage.getItem('currentUser'));
 
-                // console.log(res.role, "response");
+                console.log(res.role, "response");
 
-                // res.role === 'PATIENTS' && navigate('/user/dashboard');
-                // res.role === 'INSURANCE' && navigate('/insurance/dashboard');
-                // res.role === 'HOSPITAL' && navigate('/hospital/dashboard');
+                res.role === 'PATIENTS' && navigate('/user/dashboard');
+                res.role === 'INSURANCE' && navigate('/insurance/dashboard');
+                res.role === 'HOSPITAL' && navigate('/hospital/dashboard');
 
             } catch (err) {
                 setErr(err.response.data);

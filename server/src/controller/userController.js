@@ -251,7 +251,6 @@ export const userController = {
     }
   },
 
-
   // give all report 
   show_latest_report: catchAsync(async (req, res) => {
     const user = res.user.id;
@@ -264,6 +263,25 @@ export const userController = {
         date: 'desc'
       },
       take: 5
+    });
+
+    // Respond with the data
+    return res.status(200).json({
+      success: true,
+      data: latestReports
+    });
+  }),
+
+  show_all_report: catchAsync(async (req, res) => {
+    const user = res.user.id;
+
+    const latestReports = await prisma.healthRecord.findMany({
+      where: {
+        user_id: user
+      },
+      orderBy: {
+        date: 'desc'
+      },
     });
 
     // Respond with the data
@@ -298,8 +316,21 @@ export const userController = {
     }
 
     res.status(200).json({
-      message:"success",
+      message: "success",
       data: Records
     })
   }),
+
+  get_all_user_uploaded_files: catchAsync(async (req, res) => {
+    const userId = res.user.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    const hospital_report = user.hostpital_Report;
+    res.status(200).json({
+      message: "success",
+      data: hospital_report
+    })
+  })
 };
