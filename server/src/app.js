@@ -30,7 +30,7 @@ const node_server = createServer(app);
 
 const io = new Server(node_server, {
   cors: {
-    origin: process.env.FRONTEND_ORIGIN,
+    origin: ["*", process.env.FRONTEND_ORIGIN],
     credentials: true,
   },
 });
@@ -39,7 +39,7 @@ const io = new Server(node_server, {
 socketController(io);
 
 app.use("/user/", userRoutes);
-app.use("/insurance/", insuranceRoutes);
+app.use("/insurance/", insuranceRoutes);  
 app.use("/login", authRoutes);
 app.use("/hospital", hospitalRoutes);
 

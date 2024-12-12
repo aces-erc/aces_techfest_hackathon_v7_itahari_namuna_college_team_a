@@ -1,8 +1,9 @@
 import express from "express";
 import { userController } from "../controller/userController.js";
-import insuranceCompanyOnly from "../middleware/authmiddleware.js";
 const router = express.Router();
 
-router.post("/create", /* insuranceCompanyOnly, */ userController.createUser);
+// USER LE K K ACCESS GARNU PAUNE 
+router.post("/login",  userController.loginUser);
+router.get("/logout",  userController.logoutUser);
 
 export default router;

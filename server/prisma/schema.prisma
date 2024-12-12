@@ -69,7 +69,7 @@ model Doctor {
   phone       String   @unique
   password    String
   hospital_id Int
-  hospital    Hospital @relation("Hospital")
+  hospital    Hospital @relation("HospitalDoctors", fields: [hospital_id], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
