@@ -1,12 +1,12 @@
 function Validation(value) {
     let error = {};
-    // const email_pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    // const phone_pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 
-    if (value.email.length === 0) {
-        error.email = "User id cannot be empty";
+    if (value.phone.length === 0) {
+        error.phone = "User id cannot be empty";
     } else {
-        error.email = "";
+        error.phone = "";
     }
 
     if (value.password === "") {

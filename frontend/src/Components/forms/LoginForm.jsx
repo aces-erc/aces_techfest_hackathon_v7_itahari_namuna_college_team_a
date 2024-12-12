@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaUserAlt } from "react-icons/fa";
 import { FaFacebookF, FaXTwitter } from "react-icons/fa6";
 import { IoLogoGoogle } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../Context/authContext";
+import { AuthContext } from "../../Context/authContext";
 import MySvg from "../../images/svg/login.svg";
 import Validation from "./LoginValidation";
 
 const LoginForm = () => {
-    const { login } = useAuth();
+    const { login, currentUser } = useContext(AuthContext);
+    console.log(currentUser);
+
 
     const [err, setErr] = useState(null);
     const navigate = useNavigate();
 
 
     const [values, setValues] = useState({
-        email: '',
+        phone: '',
         password: '',
     });
 
     const [errors, setErrors] = useState({});
     useEffect(() => {
         // Check for changes in the errors state
-        if (errors.email === "" && errors.password === "") {
+        if (errors.phone === "" && errors.password === "") {
             setErr("");
         } else {
             setErr(null);
@@ -42,10 +44,12 @@ const LoginForm = () => {
             setErrors({});
             try {
                 await login(values);
-                console.log(login(values), 45);
+                const res = JSON.parse(localStorage.getItem('currentUser'));
 
+                console.log(res.role, "response");
 
-                navigate('/');
+                res.role === 'PATIENTS' && navigate('/user/dashboard');
+
             } catch (err) {
                 setErr(err.response.data);
             }
@@ -79,7 +83,7 @@ const LoginForm = () => {
                                 <FaUserAlt className="absolute" />
                                 <input
                                     type="text"
-                                    name="email"
+                                    name="phone"
                                     id="email"
                                     placeholder="User Id"
                                     className="font-semibold border-0 !border-b-2  w-[80%] outline-none px-8"
@@ -87,7 +91,7 @@ const LoginForm = () => {
                                     required
                                 />
                             </div>
-                            {errors.email && <span className="text-red-600">{errors.email}</span>}
+                            {errors.phone && <span className="text-red-600">{errors.phone}</span>}
                             <div className="mt-2 flex items-center w-full relative">
                                 <RiLockPasswordFill className="absolute" />
                                 <input

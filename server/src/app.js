@@ -8,7 +8,7 @@ import { Server } from "socket.io";
 import userRoutes from "./routes/userRoutes.js";
 import insuranceRoutes from "../src/routes/insuranceRoutes.js";
 import authRoutes from "../src/routes/authRoutes.js";
-import hospitalRoutes from "../src/routes/hospitalRoutes.js"
+import hospitalRoutes from "../src/routes/hospitalRoutes.js";
 import socketController from "../src/controller/socketController.js";
 
 const app = express();
@@ -22,9 +22,8 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-  }),
+  })
 );
-
 
 const node_server = createServer(app);
 
@@ -39,11 +38,10 @@ const io = new Server(node_server, {
 socketController(io);
 
 app.use("/user/", userRoutes);
-app.use("/insurance/", insuranceRoutes);  
+app.use("/insurance/", insuranceRoutes);
 app.use("/login", authRoutes);
 app.use("/hospital", hospitalRoutes);
 // app.use("/report")
-
 
 app.get("/", (req, res) => {
   res.send("hello via backend!");
