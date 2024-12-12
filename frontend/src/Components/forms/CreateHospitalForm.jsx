@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Validation from "./HospitalValidation"; 
+import Validation from "./HospitalValidation";
 import api from "../../utils/axiosInterceptor";
 
 const CreateHospitalForm = () => {
@@ -26,10 +26,10 @@ const CreateHospitalForm = () => {
     } else {
       setErrors({});
       try {
-        const response = api.post('/insurance/create_hospital',values);
+        const response = api.post('/insurance/create_hospital', values);
 
         if (response.ok) {
-            // TODO: add this route where the insurance comapny will see all its hospitals 
+          // TODO: add this route where the insurance comapny will see all its hospitals 
           navigate("/hospitals");
         } else {
           const data = await response.json();
@@ -42,7 +42,7 @@ const CreateHospitalForm = () => {
   };
 
   return (
-    <div className="w-full h-[100vh] flex justify-center items-center bg-gray-100">
+    <div className="w-full h-[calc(100vh-6rem)] flex justify-center items-center bg-gray-100">
       <div className="bg-white w-[40%] p-8 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Create Hospital</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
