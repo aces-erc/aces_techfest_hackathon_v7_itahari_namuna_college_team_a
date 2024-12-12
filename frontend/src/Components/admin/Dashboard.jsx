@@ -1,3 +1,5 @@
+import ProgressBar from "../dashboard/common/ProgressBar"
+
 const Dashboard = () => {
 
 
@@ -22,8 +24,10 @@ const Dashboard = () => {
                 user info
             </div>
             <div className="flex gap-4 h-[calc(100vh-10rem)] flex-col w-[60%]">
-                <div className="shadow-xl h-1/2">
-                    progress bar
+                <div className="flex flex-col justify-between shadow-xl h-1/2 p-4 ">
+                    <ProgressBar start={0} end={100000} current={20000} />
+                    <div className="bg-black w-full h-[0.1rem] opacity-40"></div>
+                    <ProgressBar start={'2024/02/20'} end={'2025/02/20'} current={Date.now()} type='date' />
                 </div>
                 <div className="gap-4 flex w-full h-1/2">
                     <div className="shadow-xl w-1/2">

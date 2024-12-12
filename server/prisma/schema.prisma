@@ -32,6 +32,7 @@ model User {
   phone                String?           @unique
   balance              Int
   password             String
+  bloodGroup           String
   insurance_company_id Int
   insurance_company    INSURANCE_COMPANY @relation(fields: [insurance_company_id], references: [id])
   createdAt            DateTime          @default(now())

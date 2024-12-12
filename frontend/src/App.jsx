@@ -7,6 +7,8 @@ import HeroSection from './pages/HeroSection';
 import AdminMain from './Components/admin/AdminMain'
 import Dashboard from './Components/admin/Dashboard';
 import Chat from './Components/admin/Chat';
+import MedicalHistory from './Components/dashboard/user/MedicalHistory';
+import ConsultationHistory from './Components/dashboard/user/ConsultationHistory';
 
 const App = () => {
   const Layout = () => {
@@ -54,6 +56,14 @@ const App = () => {
         {
           path: "/admin/dashboard/chat/",
           element: <Chat />
+        },
+        {
+          path: "/admin/dashboard/medical-history/",
+          element: <MedicalHistory />
+        },
+        {
+          path: "/admin/dashboard/Consultation-history/",
+          element: <ConsultationHistory />
         },
       ]
     }

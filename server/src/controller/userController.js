@@ -10,33 +10,35 @@ const prisma = new PrismaClient();
 const createRefreshToken = (res, userData) => {
   const id = userData.id;
   const token = jwtToken(id);
-  console.log(token)
+  console.log(token);
 
   res.cookie("jwt", token, {
     expires: new Date(
-      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000
+      Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
-  })
+  });
 
-  statusFunc(res, 201, token)
-}
+  statusFunc(res, 201, token);
+};
 
 const jwtToken = (id) => {
-  return jwt.sign({
-    id
-  }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
-  })
-}
+  return jwt.sign(
+    {
+      id,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    },
+  );
+};
 
 const checkUser = async (phone) => {
   return prisma.user.findUnique({ where: { phone } });
 };
 
-
-
-// REGISTER USER BY INSURANCE COMPANY 
+// REGISTER USER BY INSURANCE COMPANY
 export const userController = {
   createUser: async (req, res) => {
     try {
@@ -49,10 +51,10 @@ export const userController = {
         address,
         password,
         phone,
+        bloodGroup,
         balance,
         insurance_company_id,
       } = req.body;
-
 
       if (
         !first_name ||
@@ -61,6 +63,7 @@ export const userController = {
         !password ||
         !gender ||
         !address ||
+        !bloodGroup ||
         !insurance_company_id
       ) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -68,8 +71,8 @@ export const userController = {
 
       const hashed_password = await bcrypt.hash(password, 12);
 
-      const existngUser = await checkUser(phone);
-      if (existngUser) {
+      const existingUser = await checkUser(phone);
+      if (existingUser) {
         return res.status(409).json({ error: "Phone number already exists" });
       }
 
@@ -83,6 +86,7 @@ export const userController = {
           email,
           address,
           phone,
+          bloodGroup,
           balance: balance || 0,
           insurance_company_id,
         },
@@ -97,6 +101,39 @@ export const userController = {
     }
   },
 
+  userProfile: async (req, res) => {
+    try {
+      const userId = req.params.id; // Assume user ID is passed as a URL parameter
+
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          first_name: true,
+          last_name: true,
+          dob: true,
+          gender: true,
+          email: true,
+          address: true,
+          phone: true,
+          balance: true,
+          bloodGroup: true,
+          insurance_company_id: true,
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.status(200).json(user);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving the user profile" });
+    }
+  },
+
   loginUser: catchAsync(async (req, res) => {
     const { phone, password } = req.body;
 
@@ -106,25 +143,25 @@ export const userController = {
       },
     });
 
-    console.log(user)
+    console.log(user);
 
     if (!user) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: "User not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid password' });
+      return res.status(401).json({ error: "Invalid password" });
     }
 
     createRefreshToken(res, user);
   }),
 
   logoutUser: async (req, res) => {
-    res.clearCookie('jwt');
+    res.clearCookie("jwt");
     // Implement logout logic here, e.g., invalidate token or session
-    res.json({ message: 'Logged out successfully' });
+    res.json({ message: "Logged out successfully" });
   },
-}
+};
 
