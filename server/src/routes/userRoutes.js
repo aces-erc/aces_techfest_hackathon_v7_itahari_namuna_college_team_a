@@ -4,5 +4,7 @@ import insuranceCompanyOnly from "../middleware/authmiddleware.js";
 const router = express.Router();
 
 router.post("/create", /* insuranceCompanyOnly, */ userController.createUser);
+router.get("/profile", userController.userProfile);
 
 export default router;
+
