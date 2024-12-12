@@ -120,5 +120,5 @@ const HospitalReportController = {
   },
 };
 
-
 export default HospitalReportController;
+
