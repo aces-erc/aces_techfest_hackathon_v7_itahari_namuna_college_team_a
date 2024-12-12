@@ -7,19 +7,19 @@ const Dashboard = () => {
             "id": 1,
             "name": "John Doe",
             "hospital": 'Noble teaching hospital',
-            "expensis": 12000
+            "expensis": 10000
         },
         {
             "id": 2,
             "name": "John Doe",
-            "hospital": 'Noble teaching hospital',
-            "expensis": 12000
+            "hospital": 'B.P. koirala hospital',
+            "expensis": 2000
         },
         {
             "id": 3,
             "name": "John Doe",
             "hospital": 'Noble teaching hospital',
-            "expensis": 12000
+            "expensis": 5000
         },
     ]
 
@@ -87,31 +87,24 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center mt-2">
-                                    <span>180/90 mmHg</span>
-                                    <span>180 mg/dL</span>
+                                    <span>183/96 mmHg</span>
+                                    <span>176 mg/dL</span>
                                     <div className="text-red-500 rounded-md my-grid bg-primary p-2 px-4">
-                                        2024/02/20
+                                        2024/03/01
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center mt-2">
-                                    <span>180/90 mmHg</span>
+                                    <span>187/98 mmHg</span>
                                     <span>180 mg/dL</span>
                                     <div className="text-red-500 rounded-md my-grid bg-primary p-2 px-4">
-                                        2024/02/20
+                                        2024/03/23
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center mt-2">
-                                    <span>180/90 mmHg</span>
+                                    <span>178/89 mmHg</span>
                                     <span>180 mg/dL</span>
                                     <div className="text-red-500 rounded-md my-grid bg-primary p-2 px-4">
-                                        2024/02/20
-                                    </div>
-                                </div>
-                                <div className="flex justify-between items-center mt-2">
-                                    <span>180/90 mmHg</span>
-                                    <span>180 mg/dL</span>
-                                    <div className="text-red-500 rounded-md my-grid bg-primary p-2 px-4">
-                                        2024/02/20
+                                        2024/04/19
                                     </div>
                                 </div>
 
