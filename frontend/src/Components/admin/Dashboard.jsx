@@ -17,19 +17,19 @@ const Dashboard = () => {
 
 
     return (
-        <div className='h-full p-10 flex w-full my-border'>
-            <div className="flex w-1/2 my-border">
+        <div className='h-full gap-4 flex w-full'>
+            <div className="flex shadow-xl h-[calc(100vh-10rem)] w-[40%]">
                 user info
             </div>
-            <div className="flex flex-col w-1/2">
-                <div className="my-border">
+            <div className="flex gap-4 h-[calc(100vh-10rem)] flex-col w-[60%]">
+                <div className="shadow-xl h-1/2">
                     progress bar
                 </div>
-                <div className="flex w-full">
-                    <div className="my-border">
+                <div className="gap-4 flex w-full h-1/2">
+                    <div className="shadow-xl w-1/2">
                         latest Consultation
                     </div>
-                    <div className="my-border">
+                    <div className="shadow-xl w-1/2">
                         medical record
                     </div>
                 </div>

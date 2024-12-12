@@ -1,5 +1,9 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import statusFunc from "../utils/statusFunc.js";
+import bcrypt from "bcrypt";
+import catchAsync from "../utils/catchAsync.js";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -51,6 +55,7 @@ export const userController = {
         insurance_company_id,
       } = req.body;
 
+
       if (
         !first_name ||
         !last_name ||
@@ -63,6 +68,8 @@ export const userController = {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
+      const hashed_password = await bcrypt.hash(password, 12);
+
       const existngUser = await checkUser(phone);
       if (existngUser) {
         return res.status(409).json({ error: "Phone number already exists" });
@@ -73,7 +80,7 @@ export const userController = {
           first_name,
           last_name,
           dob: new Date(dob),
-          password,
+          password: hashed_password,
           gender,
           email,
           address,
@@ -91,6 +98,7 @@ export const userController = {
         .json({ error: "An error occurred while creating the user" });
     }
   },
+
 
   userProfile: async (req, res) => {
     try {
@@ -124,3 +132,36 @@ export const userController = {
     }
   },
 };
+
+  loginUser: catchAsync(async (req, res) => {
+    const { phone, password } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        phone,
+      },
+    });
+
+    console.log(user)
+
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    createRefreshToken(res, user);
+  }),
+
+  logoutUser: async (req, res) => {
+    res.clearCookie('jwt');
+    // Implement logout logic here, e.g., invalidate token or session
+    res.json({ message: 'Logged out successfully' });
+  },
+}
+
+

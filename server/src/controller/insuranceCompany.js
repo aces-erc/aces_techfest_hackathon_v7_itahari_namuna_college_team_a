@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import statusFunc from "../utils/statusFunc.js";
+import catchAsync from "../utils/catchAsync.js";
 
 const prisma = new PrismaClient();
 
@@ -10,7 +11,7 @@ const createRefreshToken = (res, userData) => {
   const token = jwtToken(id);
   console.log(token)
 
-  res.cookie("jwt", token, {
+  res.cookie("Insurance_Company", token, {
     expires: new Date(
       Date.now() + process.env.BROWSER_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
@@ -61,6 +62,43 @@ export const insuranceCompanyController = {
       });
     }
   },
+
+  loginInsuranceCompany: catchAsync(async (req, res) => {
+    const { company_name, password } = req.body;
+  
+    if (!company_name || !password) {
+      return res.status(400).json({ error: "Company name and Password is required" });
+    }
+  
+    try {
+      // Find the insurance company by company name
+      const insuranceCompany = await prisma.iNSURANCE_COMPANY.findUnique({
+        where: {
+          company_name,
+        },
+      });
+  
+      // If the company doesn't exist, return an error
+      if (!insuranceCompany) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+  
+      // Compare the hashed passwords
+      const passwordMatch = await bcrypt.compare(password, insuranceCompany.password);
+  
+      if (!passwordMatch) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+  
+      // If the credentials are valid, create a refresh token and send it back
+      createRefreshToken(res, insuranceCompany);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        error: "An error occurred while logging in",
+      });
+    }
+  }),
 
   createHospital: async (req, res) => {
     const insurance_id = req.user.id; // Gets the Insurance company ID from the authenticated user
