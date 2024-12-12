@@ -3,7 +3,7 @@ import QRCode from 'react-qr-code';
 import Logo from '../../../images/mainLogo.png';
 
 const QrGenerator = () => {
-    const [text, setText] = useState('https://sagunbasnet.com.np');
+    const [text, setText] = useState('http://localhost:8000/user/show_user_infomation');
 
     return (
         <div className="flex flex-col gap-8 h-[calc(100vh-10rem)] justify-center items-center">

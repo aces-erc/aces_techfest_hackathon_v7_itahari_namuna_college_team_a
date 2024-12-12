@@ -49,14 +49,14 @@ const MiniUserDetail = () => {
                     </span>
                     <div className="bg-black w-full h-[0.1rem] opacity-40"></div>
                     <div className="flex flex-col w-full gap-4 mt-4">
-                        <Link to='/admin/dashboard/chat/' className='w-full'>
+                        <Link to='/user/dashboard/chat/' className='w-full'>
                             <button className='bg-primary p-1 px-2 rounded-md w-full'>open chat bot</button>
                         </Link>
                         <div className="flex justify-between">
-                            <Link to='/admin/dashboard/Consultation-history/'>
+                            <Link to='/user/dashboard/Consultation-history/'>
                                 <button className='border-2 border-primary p-1 px-2 rounded-md text-primary'>Consultation history</button>
                             </Link>
-                            <Link to='/admin/dashboard/medical-history/'>
+                            <Link to='/user/dashboard/medical-history/'>
                                 <button className='border-2 border-primary p-1 px-2 rounded-md text-primary'>Medical history</button>
                             </Link>
 
