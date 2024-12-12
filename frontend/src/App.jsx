@@ -17,6 +17,7 @@ import UserCreation from './Components/forms/UserCreation';
 import CreateHospitalForm from './Components/forms/CreateHospitalForm';
 import QrGenerator from './Components/dashboard/user/QrGenerator';
 import HealthEntryForm from './Components/forms/HealthyEntryForm';
+import ShowUserInformation from './pages/ShowUserInformation';
 
 const App = () => {
   const Layout = () => {
@@ -44,6 +45,10 @@ const App = () => {
     {
       path: '/signup',
       element: <Signup />
+    },
+    {
+      path:"user/show_user_information/:userId/stats",
+      element:<ShowUserInformation />
     },
     {
       path: '/test',
