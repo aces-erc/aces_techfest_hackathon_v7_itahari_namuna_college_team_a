@@ -62,7 +62,7 @@ export const userController = {
         !last_name ||
         !dob ||
         !password ||
-        !role ||
+        // !role ||
         !gender ||
         !address ||
         !bloodGroup ||
@@ -86,7 +86,7 @@ export const userController = {
           password: hashed_password,
           gender,
           email,
-          role,
+          // role,
           address,
           phone,
           bloodGroup,
