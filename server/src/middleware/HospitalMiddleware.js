@@ -19,11 +19,15 @@ const hospitalMiddleware = async (req, res, next) => {
       .json({ success: false, message: "Unauthorized: No token provided." });
   };
 
+
   const decoded_hospital = jwt.verify(cookies, process.env.JWT_SECRET);
-  
-  
+
+
+
   try {
     const decoded = await prisma.hospital.findUnique({ where: { id: decoded_hospital.id } })
+    decoded.role = "HOSPITAL";
+
     if (decoded.role !== "HOSPITAL") {
       return res.status(403).json({
         success: false,
