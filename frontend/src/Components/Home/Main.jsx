@@ -6,7 +6,6 @@ import {
     Stethoscope,
     Pill,
 } from "lucide-react";
-import Logo from '../../images/mainLogo.png';
 import React, { useEffect } from "react";
 // import { render } from "react-dom";
 import HomeSvg from "../../images/svg/home.svg";
@@ -73,9 +72,9 @@ export default function Main() {
             <div className="relative z-10">
                 <main className=" h-[83vh] container mx-auto px-4 py-0">
                     <nav className="bg-transparent flex justify-between items-center p-6  ">
-                        <div className="my-grid w-[14rem]">
-                            <img src={Logo} alt="" />
-                        </div>
+                        <h2 className=" font-bold bg-clip-text text-primary">
+                            AroHealth
+                        </h2>
                         <div className="flex gap-4">
                             <Link to='/login'>
                                 <button className="px-6 py-2 bg-primary text-white rounded-lg hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-0.5">
